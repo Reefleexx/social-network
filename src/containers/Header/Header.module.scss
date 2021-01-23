@@ -1,0 +1,21 @@
+:export {
+  @mixin baseColor (){
+    background-color: rgba(62, 127, 212, 0.9);
+    border-radius: 5px;
+    border: #204976 2px solid;
+    box-shadow: 0 3px 10px 3px rgba(2, 18, 48, .6);
+  }
+}
+@mixin baseColor (){
+  background-color: rgba(62, 127, 212, 0.9);
+  border: #204976 2px solid;
+  box-shadow: 0 3px 10px 3px rgba(2, 18, 48, .6);
+  border-radius: 5px;
+}
+
+.Header {
+  //width: 100%;
+  @include baseColor;
+  height: 7vh;
+  position: sticky;
+}

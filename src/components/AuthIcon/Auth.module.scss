@@ -1,0 +1,22 @@
+.Auth {
+  i{
+    font-size: 2.6vh;
+    transform: translateY(10%);
+    color: #1f1e19;
+    &:hover {
+      color: #1f1e19;
+      opacity: 1;
+    }
+  }
+}
+
+.linkText{
+  color: #e7e7e7;
+  text-decoration: none;
+  font-size: 2vh;
+  &:hover {
+    text-decoration: none;
+    color: rgb(60, 56, 56);
+    opacity: .7;
+  }
+}

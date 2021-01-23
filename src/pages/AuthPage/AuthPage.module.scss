@@ -1,0 +1,40 @@
+@import 'src/containers/Header/Header.module';
+
+.AuthPage {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: start;
+}
+
+.authWrapper {
+  @include baseColor;
+  margin-top: 20vh;
+  padding: 3.5em 6em 3.5em 6em;
+  position: relative;
+  width: 60vw;
+  text-align: center;
+  form div {
+    text-align: left;
+  }
+  input {
+    width: 100%;
+  }
+  form button:first-child {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 1vh;
+
+  }
+  hr {
+    width: 110%;
+  }
+  form {
+    div {
+      margin-bottom: 10px;
+    }
+  }
+}

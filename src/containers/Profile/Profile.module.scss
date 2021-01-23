@@ -1,0 +1,169 @@
+@mixin back() {
+  margin: 0 1vmin 1vmin;
+  //background: rgba(40, 200, 224, 0.7);
+  background: rgba(165, 165, 165, 0.7);
+  border-radius: 5px;
+  padding: 1.5vmin 1.5vmin 4vmin 1.5vmin;
+}
+
+.Profile {
+  position: absolute;
+  right: 0;
+  width: 78%;
+}
+
+.ProfileWrapper {
+  display: flex;
+}
+
+.leftBar {
+  width: 32%;
+  //background: rgba(40, 200, 224, 0.7);
+}
+
+.photoContainer {
+  text-align: center;
+  @include back;
+}
+
+.photoText {
+  padding: 2px;
+  background: #ffffff;
+  border-radius: 6px;
+}
+
+.photo_img {
+  margin: 10px 0 10px 0;
+  display: flex;
+  align-items: center;
+  position: relative;
+  img {
+    width: 100%;
+    max-height: 100%;
+    cursor: pointer;
+    object-position: center;
+    border-radius: 2px;
+    object-fit: cover;
+  }
+}
+
+.friends {
+  margin-top: 1.3vh;
+  margin-bottom: 1.3vh;
+  @include back;
+}
+
+.friends_items {
+  margin: 0 0 3vh 0;
+  display: flex;
+  flex: 0 0 33.333%;
+  justify-content: space-around;
+}
+
+.barText {
+  width: 100%;
+  margin-bottom: 1vh;
+  position: relative;
+}
+
+.barTextLeft {
+  font-size: 1.6vmin;
+  color: #ffffff;
+}
+
+.barTextRight {
+  font-size: 1.3vmin;
+  color: #ffffff;
+  cursor: pointer;
+  font-style: italic;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  padding-right: 1.2vmin;
+}
+
+.favorites {
+ margin-top: 3vh;
+  @include back;
+}
+
+.rightBar {
+  width: 63%;
+  padding: 1.5vmin 1.5vmin 4vmin 2vmin;
+  margin: 0 1vmin 1vmin;
+  //background: rgba(40, 200, 224, 0.7);
+  background: rgba(165, 165, 165, 0.7);
+  border-radius: 5px;
+}
+
+.userName {
+  display: flex;
+  flex-direction: row;
+  position: relative;
+  color: #ffffff;
+  //margin-bottom: 3vmin;
+}
+
+.userName_text {
+  font-size: 2vmin;
+  font-weight: 500;
+  margin: 0 0 1vh 0;
+}
+
+.userStatus {
+  top: 0;
+  right: 0;
+  font-style: italic;
+  position: absolute;
+}
+
+.userNameItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.userName_edit {
+  display: flex;
+  padding-left: 1.5vmin;
+  &:hover {
+    text-decoration: underline;
+    cursor: pointer;
+  }
+}
+
+.mainUserData {
+  text-align: center;
+  //margin-top: 3vmin;
+  //margin-bottom: 3vmin;
+}
+
+.mainData_item {
+  max-width: 100%;
+  display: flex;
+  flex-direction: row;
+  padding-left: 1.5vmin;
+  margin-bottom: 1.5vmin;
+}
+
+.data_item_left {
+  width: 29%;
+  display: flex;
+  flex-direction: column;
+  color: #ffffff;
+  text-align: left;
+  font-size: 1.8vmin;
+  margin-right: 5vmin;
+}
+
+.data_item_right {
+  width: 70%;
+  color: rgb(31, 117, 164);
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+}
+
+hr:nth-of-type(2) {
+  margin-top: 1vmin;
+}

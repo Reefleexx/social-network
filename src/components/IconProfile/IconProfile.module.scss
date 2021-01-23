@@ -1,0 +1,33 @@
+.ProfileIcon {
+  text-align: center;
+  max-height: 8vh;
+  max-width: 8vh;
+  position: relative;
+  display: flex;
+  justify-content: center;
+}
+
+.imgContainer {
+  height: 6.7vh;
+  width: 6.7vh;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    left: 0;
+    top: 0;
+    border-radius: 50%;
+    cursor: pointer;
+  }
+}
+
+.userName {
+  color: #ffffff;
+  font-size: 1.4vmin;
+  position: absolute;
+  bottom: 0;
+  transform: translateY(95%);
+  cursor: pointer;
+}
+
