@@ -1,0 +1,94 @@
+@import 'src/components/ItemSearch/ItemSearch.module';
+@import '../../containers/Main/Profile/Profile.module';
+
+.FavoriteItem {
+  display: flex;
+  flex-direction: row;
+  @include back;
+  padding-bottom: 1rem;
+  position: relative;
+}
+
+.icon {
+  @include favIcon;
+  top: 0;
+  right: 0;
+  margin: 2rem 3rem 0 0;
+}
+
+.row_left {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 20%;
+}
+
+.row_right {
+  width: 80%;
+  margin-left: 3.4rem;
+  button {
+    margin-top: .5rem;
+    margin-bottom: .5rem;
+  }
+}
+
+.name_geo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.name {
+  font-weight: 500;
+  font-size: 2rem;
+  line-height: 0;
+}
+
+.geo {
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: row;
+  text-align: center;
+  width: 100%;
+  flex-flow: row wrap;
+}
+
+.img_container {
+  margin-bottom: 1rem;
+  height: 13rem;
+  width: 12rem;
+  img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    border-radius: 3px;
+  }
+}
+
+.labels {
+  display: flex;
+  flex-direction: row;
+  margin-top: .5rem;
+}
+
+.label {
+  margin-right: .3rem;
+  color: #ffffff;
+  border-radius: 6px;
+  padding: 0 .3rem 0 .3rem;
+}
+
+.label_green{
+  background: rgb(44,176,62)
+}
+
+.label_black{
+  background: rgb(21, 21, 21);
+}
+
+.label_blue{
+  background: rgb(17,109,246);
+}
+.label_lightBlue{
+  background: rgb(34,161,176);
+}

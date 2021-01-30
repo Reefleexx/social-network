@@ -1,6 +1,7 @@
 import React from 'react'
 import classes from './NavBar.module.scss'
-import {NavLink} from "react-router-dom";
+import {withRouter} from "react-router";
+
 
 const navLinks = [
     {text: 'Messages', to: 'messages', exact: true},
@@ -9,19 +10,24 @@ const navLinks = [
     {text: 'Search', to: 'search', exact: true}
 ]
 
+
 const NavBar = (props) => {
+
+    const onLinkClick = (e, to) => {
+        e.preventDefault()
+        props.history.push(to)
+    }
 
     const renderLinks = () => (
         <div className={classes.links}>
             { navLinks.map((link, index) => (
                 <div className={classes.link} key={index}>
-                    <NavLink
+                    <span
                         key={index}
-                        to={link.to}
-                        exact={link.exact}
+                        onClick={e => onLinkClick(e, link.to)}
                     >
                         {link.text}
-                    </NavLink>
+                    </span>
                 </div>
             ))}
         </div>
@@ -34,4 +40,4 @@ const NavBar = (props) => {
     )
 }
 
-export default NavBar
+export default withRouter(NavBar)

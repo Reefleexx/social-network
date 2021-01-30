@@ -1,5 +1,5 @@
 .Button {
-  padding: 10px;
+  padding: .7rem;
   cursor: pointer;
   border: .5px solid #ffffff;
   border-radius:4px;
@@ -37,6 +37,28 @@
   color: rgb(24, 23, 23)
 }
 
+.white {
+  color: rgb(24, 24, 24);
+  background: #ffffff;
+  width: 100%;
+  border-radius: 8px;
+  &:hover {
+    box-shadow: none;
+  }
+}
+
+.blueBig {
+  width: 100%;
+  border-radius: 25px;
+  background: rgb(29,161,242);
+  color: #ffffff;
+}
+
+.gray {
+  color: #ffffff;
+  background: rgb(57, 57, 57);
+}
+
 .extra {
   background: none;
   text-transform: none;
@@ -53,31 +75,6 @@
   }
 }
 
-.blueBig {
-  width: 100%;
-  border-radius: 25px;
-  background: rgb(29,161,242);
-  color: #ffffff;
-}
-
-.white {
-  color: rgb(24, 24, 24);
-  background: #ffffff;
-  width: 100%;
-  border-radius: 8px;
-  &:hover {
-    box-shadow: none;
-  }
-}
-
-.text_2 {
-  font-size: 1.2vmin;
-}
-
-.text_3 {
-  font-size: 1.9vmin;
-}
-
 .forProfile {
   color: rgb(31, 117, 164);
   font-size: 1.8vmin;
@@ -91,4 +88,16 @@
     box-shadow: none;
     background: rgba(117, 117, 117, .8);
   }
+}
+
+.text_2 {
+  font-size: 1.2vmin;
+}
+
+.text_0 {
+  font-size: .8rem;
+}
+
+.text_3 {
+  font-size: 1.9vmin;
 }

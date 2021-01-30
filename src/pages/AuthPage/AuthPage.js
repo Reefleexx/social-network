@@ -1,91 +1,40 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState} from 'react'
 import classes from './AuthPage.module.scss'
-import Inputs from "../../components/Input/Input";
-import Button from "../../components/Button/Button";
+import Button from "../../components/Forms/Button/Button";
+import {getValues, isValidCheck} from "../../bl/formLogic/formLogic";
 import {withRouter} from "react-router";
-import {isValidCheck} from "../../bl/formLogic/formLogic";
+import Input from "../../components/Forms/Input/Input";
 
-export const AuthContext = React.createContext()
 
 const AuthPage = (props) => {
 
-    // const [valid, validChange] = useState(false)
-    // const [isSubmit, submitHandler] = useState(false)
-    const [error, errorHandler] = useState({
-        email: '',
-        password: ''
-    })
-
-    const forms = [
-        {
-            label: 'Email',
-            name: 'email',
-            type: 'email',
-            validations: {
-                required: true,
-                email: true
-            }
-        },
-        {
-            label: 'Password',
-            name: 'password',
-            type: 'password',
-            validations: {
-                required: true,
-                minLength: 6,
-                haveCapital: true
-            }
-        }
-    ]
+    const [isError, isErrorHandler] = useState(false)
 
     const onSubmitHandler = e => {
+
         e.preventDefault()
+
+        isErrorHandler(true)
+
         console.log(e)
-        const values = Object.keys(e.target.form).reduce((result, el) => {
 
-            const element = e.target.form[el]
+        const values = getValues(e)
 
-            if (element.defaultValue || element.defaultValue === '') {
-                const id = element.id.split('-')[0]
-                result[id] = element.defaultValue
-            }
+        const errors = Object.keys(values).reduce((result, inputName, i) => {
+
+            result[inputName] = isValidCheck(values[inputName], e.target.form[i].validations)
 
             return result
         }, {})
-
-        const error = Object.keys(values).reduce((result, inputName, i) => {
-
-            result[inputName] = isValidCheck(values[inputName], forms[i].validations)
-
-            return result
-        }, {})
-
-        console.log(error)
-
-        errorHandler(error)
-        // submitHandler(true)
-        // console.log(valid)
-        // if (valid) {
-        //     const data = Object.keys(e.target.form).reduce((result, el) => {
-        //
-        //         const element = e.target.form[el]
-        //
-        //         const id = element.id
-        //         if (element.defaultValue) {
-        //             result[id] = element.defaultValue
-        //             return result
-        //         }
-        //
-        //         return result
-        //     }, {})
-        //     console.log(e)
-            // console.log(data)
+        console.log(errors)
+        console.log(values)
 
     }
+    const onCreateAcc = e => {
+        e.preventDefault()
+        props.history.push('/authPage/registration')
 
-    // useEffect(() => {
-    //
-    // }, [valid])
+    }
 
     return(
         <div className={classes.AuthPage}>
@@ -99,14 +48,20 @@ const AuthPage = (props) => {
                         props.history.push('/')
                     }}/>
 
-                    <Inputs
-                        forms={forms}
-                        errors={error}
-                        class={'white'}
-                        // validChange={validChange}
-                        // isSubmit={isSubmit}
-                        // submitHandler={submitHandler}
+                    <Input
+                        type={'email'}
+                        error={isError}
+                        class={'text_2'}
+                        errorToggler={isErrorHandler}
                     />
+
+                    <Input
+                        type={'password'}
+                        class={'text_2'}
+                        error={isError}
+                        errorToggler={isErrorHandler}
+                    />
+
                     <Button
                         onClick={(e) => onSubmitHandler(e)}
                         typeOfAction={'submit'}
@@ -118,11 +73,11 @@ const AuthPage = (props) => {
 
                 <hr/>
                 <Button type={'red'} text={'Forget your password ?'} onClick={e => e.preventDefault()}/>
-                <Button type={'green'} text={'Create new account'} />
+                <Button type={'green'} text={'Create new account'} onClick={e => onCreateAcc(e)}/>
 
             </div>
         </div>
     )
 }
 
-export default AuthPage
+export default withRouter(AuthPage)

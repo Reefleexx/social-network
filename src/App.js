@@ -1,11 +1,13 @@
 import {Route, Switch, withRouter} from "react-router";
 import AuthPage from "./pages/AuthPage/AuthPage";
 import MainPage from "./pages/MainPage/MianPage";
+import CreateAcc from "./containers/CreateAcc/CreateAcc";
 
 function App() {
     return (
        <Switch>
            <Route path={'/authPage'} exact={true} component={AuthPage}/>
+           <Route path={'/authPage/registration'} exact={true} component={CreateAcc}/>
            <Route path={'/'} component={MainPage}/>
        </Switch>
     );

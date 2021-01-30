@@ -1,0 +1,42 @@
+.Messages {
+  position: absolute;
+  width: 78%;
+  right: 0;
+  display: flex;
+}
+
+.messagesWrapper {
+  width: 65%;
+  border-radius: 3px;
+  //padding: .8vmin;
+}
+
+.messages_types {
+  width: 35%
+}
+
+.messages_types {
+  border-radius: 4px;
+  color: #ffffff;
+  background: rgba(165, 165, 165, 1);
+  margin-left: 3rem;
+  margin-top: .8rem;
+  padding: .8rem 0 .8rem 0;
+  height: 100%;
+  font-size: 110%;
+}
+
+.messages_type {
+  transition: 150ms;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: .25rem 0 .25rem 0;
+  cursor: pointer;
+  span {
+    margin-left: 3rem;
+  }
+  &:hover {
+    background: rgb(192, 192, 192);;
+  }
+}

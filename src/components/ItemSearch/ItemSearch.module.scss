@@ -1,0 +1,61 @@
+@import '../../containers/Main/Profile/Profile.module';
+
+:export {
+  @mixin favIcon() {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    color: rgb(229, 163, 10);
+    background: none;
+    font-size: 2rem;
+    cursor: pointer;
+  }
+}
+
+@mixin favIcon() {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  color: rgb(229, 163, 10);
+  background: none;
+  font-size: 2rem;
+  cursor: pointer;
+}
+
+.ItemSearch {
+  display: flex;
+  flex-direction: column;
+  border-radius: 3px;
+  height: 20rem;
+  margin-right: 2.4rem;
+  width: 14rem;
+  background: $backColor;
+  justify-content: flex-start;
+  position: relative;
+  button {
+    margin-left: 1rem;
+    width: 60%;
+  }
+  i {
+    @include favIcon;
+    margin: 0 1rem 4.6rem 0;
+    font-size: 1.6rem;
+  }
+}
+
+.img_container {
+  height: 65%;
+  width: 100%;
+  img {
+    height: 100%;
+    width: 100%;
+    border-radius: 3px;
+    object-fit: cover;
+  }
+}
+
+.name {
+  font-weight: 500;
+  font-size: 1.1rem;
+  margin: 1rem;
+}

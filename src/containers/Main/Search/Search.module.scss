@@ -1,0 +1,43 @@
+@import 'src/components/ItemSearch/ItemSearch.module';
+
+.Search {
+  i {
+    @include favIcon;
+  }
+  width: 78%;
+  right: 0;
+  display: flex;
+  form {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 2rem;
+    width: 100%;
+    input {
+      width: 70%;
+    }
+  }
+}
+
+.search_wrapper {
+  margin-top: 1.2rem;
+  width: 100%;
+}
+
+.search_items {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  height: 100%;
+  flex-flow: row wrap;
+}
+
+.input_field {
+  border-radius: 4px;
+  border: 1px solid rgba(198, 198, 198, 0.9);
+  font-size: 1.2rem;
+  padding: .4rem;
+  background-color: whitesmoke;
+  &:focus {
+    outline: none;
+  }
+}

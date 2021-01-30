@@ -1,9 +1,9 @@
 import React from 'react'
 import classes from './Profile.module.scss'
-import photo from '../../img/wide.jpg'
-import Photo from '../../img/tall.jpg'
-import Button from "../../components/Button/Button";
-import IconProfile from "../../components/IconProfile/IconProfile";
+import photo from '../../../img/wide.jpg'
+import Photo from '../../../img/tall.jpg'
+import Button from "../../../components/Forms/Button/Button";
+import IconProfile from "../../../components/IconProfile/IconProfile";
 
 
 const Profile = (props) => {
@@ -26,20 +26,47 @@ const Profile = (props) => {
     const renderMainUserData = () => {
         return (
             <div className={classes.mainData_item}>
-                <div className={classes.data_item_left}>
-                    <span>Name :</span>
-                    <span>Surname :</span>
-                    <span>Date of birthday :</span>
-                    <span>Location :</span>
-                    <span>About myself :</span>
+                <div className={classes.data_item}>
+                    <span className={classes.data_itemLeft}>Name: </span>
+                    <span className={classes.data_itemRight}>Ivan</span>
                 </div>
-                <div className={classes.data_item_right}>
-                    <span>Ivan</span>
-                    <span>Dzemich</span>
-                    <span>10.10.2001</span>
-                    <span>Ukraine, Khmelnitsky</span>
-                    <span>I am what I am and you go fuck)</span>
+                <div className={classes.data_item}>
+                    <span className={classes.data_itemLeft}>Surname: </span>
+                    <span className={classes.data_itemRight}>Dzemich</span>
                 </div>
+                <div className={classes.data_item}>
+                    <span className={classes.data_itemLeft}>Sex: </span>
+                    <span className={classes.data_itemRight}>Male</span>
+                </div>
+                <div className={classes.data_item}>
+                    <span className={classes.data_itemLeft}>Date of birthday : </span>
+                    <span className={classes.data_itemRight}>10.10.2001</span>
+                </div>
+                <div className={classes.data_item}>
+                    <span className={classes.data_itemLeft}>Location : </span>
+                    <span className={classes.data_itemRight}>Ukraine, Khmelnitsky</span>
+                </div>
+                <div className={classes.data_item}>
+                    <span className={classes.data_itemLeft}>About myself : </span>
+                    <span className={classes.data_itemRight}>I am what I am and you go fuck)</span>
+                </div>
+
+                {/*<div className={classes.data_item_left}>*/}
+                {/*    <span>Name :</span>*/}
+                {/*    <span> :</span>*/}
+                {/*    <span>Sex :</span>*/}
+                {/*    <span>Date of birthday :</span>*/}
+                {/*    <span>Location :</span>*/}
+                {/*    <span>About myself :</span>*/}
+                {/*</div>*/}
+                {/*<div className={classes.data_item_right}>*/}
+                {/*    <span>Ivan</span>*/}
+                {/*    <span>Dzemich</span>*/}
+                {/*    <span>Male</span>*/}
+                {/*    <span>10.10.2001</span>*/}
+                {/*    <span>Ukraine, Khmelnitsky</span>*/}
+                {/*    <span>I am what I am and you go fuck)</span>*/}
+                {/*</div>*/}
             </div>
         )
     }
@@ -104,6 +131,7 @@ const Profile = (props) => {
                         <hr/>
 
                         <div className={classes.mainUserData}>
+
                             {renderMainUserData()}
                             <Button
                                 type={'forProfile'}
