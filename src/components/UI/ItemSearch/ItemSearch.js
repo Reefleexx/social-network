@@ -1,8 +1,8 @@
 import React from 'react'
 import classes from './ItemSearch.module.scss'
-import Button from "../Forms/Button/Button";
+import Button from "../../Forms/Button/Button";
 import {withRouter} from "react-router";
-import photo from '../../img/tall.jpg'
+import photo from '../../../img/tall.jpg'
 
 const ItemSearch = (props) => {
 

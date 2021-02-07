@@ -1,6 +1,6 @@
 import React, {useState} from 'react'
 import classes from './Search.module.scss'
-import ItemSearch from "../../../components/ItemSearch/ItemSearch";
+import ItemSearch from "../../../components/UI/ItemSearch/ItemSearch";
 
 const Search = (props) => {
 

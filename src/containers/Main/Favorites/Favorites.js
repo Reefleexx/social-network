@@ -1,6 +1,6 @@
 import React from 'react'
 import classes from './Favorites.module.scss'
-import FavoriteItem from "../../../components/FavoriteItem/FavoriteItem";
+import FavoriteItem from "../../../components/UI/FavoriteItem/FavoriteItem";
 
 const Favorites = (props) => {
     return(

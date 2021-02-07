@@ -1,7 +1,7 @@
 import React from 'react'
 import classes from './FavoriteItem.module.scss'
-import photo from '../../img/tall.jpg'
-import Button from "../Forms/Button/Button";
+import photo from '../../../img/tall.jpg'
+import Button from "../../Forms/Button/Button";
 
 const FavoriteItem = (props) => {
     return(

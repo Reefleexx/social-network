@@ -1,0 +1,15 @@
+.Alert {
+  position: absolute;
+  z-index: 100;
+  width: 40%;
+  margin: 1rem auto;
+  padding: 1.5rem .4rem;
+  font-size: 1.2rem;
+  i {
+    top: 0;
+    right: 0;
+    cursor: pointer;
+    position: absolute;
+    margin: .39rem .47rem 0 0;
+  }
+}

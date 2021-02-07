@@ -1,13 +1,33 @@
-import {Route, Switch, withRouter} from "react-router";
-import AuthPage from "./pages/AuthPage/AuthPage";
+import {Redirect, Route, Switch, withRouter} from "react-router";
 import MainPage from "./pages/MainPage/MianPage";
-import CreateAcc from "./containers/CreateAcc/CreateAcc";
+import AuthPage from "./pages/AuthPage/AuthPage";
+import {useDispatch, useSelector} from "react-redux";
+import {authentication} from "./bl/firebaseConfig";
+import {checkIfAuth} from "./redux/actions/authActions";
+
+
+authentication.onAuthStateChanged(user => {
+    console.log(authentication.currentUser)
+    func()
+})
+
+let func
 
 function App() {
+
+    const user = useSelector(state => state.auth)
+    const dispatch = useDispatch()
+
+    func = () => {
+        dispatch(checkIfAuth())
+    }
+
     return (
        <Switch>
-           <Route path={'/authPage'} exact={true} component={AuthPage}/>
-           <Route path={'/authPage/registration'} exact={true} component={CreateAcc}/>
+           {
+               user.uid ? <Redirect from={'/authPage/:type'} to={'/'}/> : <Route path={'/authPage'} component={AuthPage}/>
+           }
+
            <Route path={'/'} component={MainPage}/>
        </Switch>
     );

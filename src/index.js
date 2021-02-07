@@ -6,13 +6,17 @@ import reportWebVitals from './reportWebVitals';
 import Layout from "./hoc/Layout";
 import 'bootstrap/scss/bootstrap.scss'
 import {BrowserRouter} from "react-router-dom"
+import {Provider} from "react-redux";
+import store from "./redux/store";
 
 const app = (
-    <BrowserRouter>
-        <Layout >
-            <App/>
-        </Layout>
-    </BrowserRouter>
+    <Provider store={store}>
+        <BrowserRouter>
+            <Layout >
+                <App/>
+            </Layout>
+        </BrowserRouter>
+    </Provider>
 )
 
 ReactDOM.render(app, document.getElementById('root'));

@@ -4,6 +4,29 @@
   justify-content: left;
 }
 
+.input_block {
+  position: relative;
+  width: 100%;
+  input {
+    width: 100%;
+    padding-right: 2.5rem;
+  }
+  i {
+    position: absolute;
+    color: rgb(71, 71, 71);
+    right: 0;
+    top: 50%;
+    transform: translateY(-45%);
+    margin-right: .85rem;
+    font-size: 1.2rem;
+    cursor: pointer;
+    &:hover {
+      text-decoration: none;
+      opacity: .7;
+    }
+  }
+}
+
 .input_label {
   font-size: 2rem;
   margin-bottom: .1rem;

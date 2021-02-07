@@ -1,17 +1,35 @@
 import React from 'react'
 import classes from './NavBar.module.scss'
 import {withRouter} from "react-router";
+import {useSelector} from "react-redux";
 
-
-const navLinks = [
-    {text: 'Messages', to: 'messages', exact: true},
-    {text: 'Profile', to: 'profile', exact: true},
-    {text: 'Favorites', to: 'favorites', exact: true},
-    {text: 'Search', to: 'search', exact: true}
-]
+// const navLinks = [
+//     {text: 'Messages', to: 'messages', exact: true},
+//     {text: 'Profile', to: 'profile', exact: true},
+//     {text: 'Favorites', to: 'favorites', exact: true},
+//     {text: 'Search', to: 'search', exact: true}
+// ]
 
 
 const NavBar = (props) => {
+
+    const auth = useSelector(state => state.auth)
+
+    let navLinks
+
+    if (auth.uid) {
+        navLinks = [
+            {text: 'Messages', to: 'messages', exact: true},
+            {text: 'Profile', to: 'profile', exact: true},
+            {text: 'Favorites', to: 'favorites', exact: true},
+            {text: 'Search', to: 'search', exact: true}
+        ]
+    } else {
+        navLinks = [
+            {text: 'Search', to: 'search', exact: true}
+        ]
+    }
+
 
     const onLinkClick = (e, to) => {
         e.preventDefault()
@@ -35,7 +53,9 @@ const NavBar = (props) => {
 
     return(
         <nav className={'ml-2 mt-4 ' + classes.NavBar}>
-            { renderLinks() }
+            {
+                auth.checked && renderLinks()
+            }
         </nav>
     )
 }

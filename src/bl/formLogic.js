@@ -63,14 +63,17 @@ export const createForm = (type) => {
 }
 
 export const getValues = (e) => {
-    return Object.keys(e.target.form).reduce((result, el) => {
+    return Object.keys(e.target.form).reduce((result, el, i) => {
+        console.log(el)
+        const element = e.target.form[i]
+        console.log(element)
 
-        const element = e.target.form[el]
-
-        if (element.defaultValue || element.defaultValue === '') {
-            const id = element.id.split('-')[0]
-            result[id] = element.defaultValue
-        }
+       // if(element) {
+       //     if (element.value) {
+       //         const id = element.id.split('-')[0]
+       //         result[id] = element.defaultValue
+       //     }
+       // }
 
         return result
     }, {})
@@ -107,6 +110,14 @@ export const isValidCheck = (value, type) => {
             break;
 
         case 'name':
+            validations = {
+                required: true,
+                minLength: 2,
+                max_length: 25
+            }
+            break;
+
+        case 'surname':
             validations = {
                 required: true,
                 minLength: 2,

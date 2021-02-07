@@ -3,7 +3,7 @@ import classes from './Profile.module.scss'
 import photo from '../../../img/wide.jpg'
 import Photo from '../../../img/tall.jpg'
 import Button from "../../../components/Forms/Button/Button";
-import IconProfile from "../../../components/IconProfile/IconProfile";
+import IconProfile from "../../../components/UI/IconProfile/IconProfile";
 
 
 const Profile = (props) => {

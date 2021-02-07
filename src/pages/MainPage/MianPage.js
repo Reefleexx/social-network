@@ -2,31 +2,49 @@ import React from 'react'
 import classes from "./MainPage.module.scss";
 import Header from "../../containers/Header/Header";
 import Sidebar from "../../containers/Sidebar/Sidebar";
-import {Route, Switch} from "react-router";
+import {Redirect, Route, Switch} from "react-router";
 import Profile from "../../containers/Main/Profile/Profile";
 import Messages from "../../containers/Main/Messages/Messages";
 import Search from "../../containers/Main/Search/Search";
 import Favorites from "../../containers/Main/Favorites/Favorites";
+import {useSelector} from "react-redux";
 
 const some = () => <div className={'col-9 ' + classes.some}/>
 
 const MainPage = (props) => {
+
+    const auth = useSelector(state => state.auth)
+
+    let routes
+
+    if (auth.uid) {
+        routes = <Switch>
+            <Route path={'/search'} component={Search} exact={true}/>
+            <Route path={'/messages'} component={Messages} exact={true}/>
+            <Route path={'/messages/:id'} component={some} exact={true}/>
+            <Route path={'/profile'} component={Profile} exact={true}/>
+            <Route path={'/favorites'} component={Favorites} exact={true}/>
+            <Route path={'/'} component={Search} exact={true}/>
+            <Redirect to={'/'} componenet={Search} />
+        </Switch>
+    } else {
+        routes = <Switch>
+            <Route path={'/search'} component={Search} exact={true}/>
+            <Route path={'/'} component={Search} exact={true}/>
+            <Redirect to={'/'} componenet={Search} />
+        </Switch>
+    }
+
     return(
         <div className={'container-lg mt-3 justify-content-between' + classes.MainPage}>
             <Header/>
 
-        <div className={'row p-2 mt-3'} style={{position: 'relative'}}>
+            <div className={'row p-2 mt-3'} style={{position: 'relative'}}>
                 <Sidebar/>
 
-                <Switch>
-                    <Route path={'/messages'} component={Messages} exact={true}/>
-                    <Route path={'/messages/:id'} component={some} exact={true}/>
-                    <Route path={'/profile'} component={Profile} exact={true}/>
-                    <Route path={'/favorites'} component={Favorites} exact={true}/>
-                    <Route path={'/search'} component={Search} exact={true}/>
-                    <Route path={'/'} component={Search} exact={true}/>
-                </Switch>
-
+                {
+                    auth.checked && routes
+                }
             </div>
 
         </div>

@@ -1,5 +1,5 @@
-@import 'src/components/ItemSearch/ItemSearch.module';
-@import '../../containers/Main/Profile/Profile.module';
+@import '../ItemSearch/ItemSearch.module';
+@import '../../../containers/Main/Profile/Profile.module';
 
 .FavoriteItem {
   display: flex;
