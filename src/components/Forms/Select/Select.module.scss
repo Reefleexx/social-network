@@ -1,0 +1,22 @@
+.wrapper select
+{
+  background-color: whitesmoke;
+  width: 30%;
+  margin: 0 .1rem 0 0;
+  z-index: 100;
+  font-size: 100%;
+  padding: .3rem .6rem .3rem .6rem;
+  font-family: Segoe UI, Helvetica, sans-serif;
+  border: 1px solid #D0D0D0;
+  box-sizing: border-box;
+  outline: none;
+  border-radius: 4px;
+}
+
+.select_error {
+  color: #b01c1c;
+  font-size: 1em;
+  font-weight: 500;
+  display: flex;
+  margin-left: .2rem;
+}

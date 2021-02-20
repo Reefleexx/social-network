@@ -1,0 +1,141 @@
+@import 'src/containers/Main/Profile/Profile.module.scss';
+
+.Chat {
+  @include back;
+  width: 78%;
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  position: relative;
+  justify-content: space-between;
+}
+
+.head {
+  border-bottom: 1px solid #ffffff;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.foot {
+  border-top: 1px solid #ffffff;
+  padding-top: 1rem;
+}
+
+.body {
+  height: 100%;
+  max-height: 70vh;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  padding: .5rem .6rem;
+  &::-webkit-scrollbar {
+    width: 0;
+  }
+}
+
+.user_row {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+}
+
+.my_row {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+}
+
+.my_message {
+  background: #2884f6;
+  color: #ffffff;
+  border-radius: 10px;
+  padding: .4rem;
+}
+
+.user_message {
+  background: #ffffff;
+  padding: .4rem;
+  color: rgb(40,40,40);
+  border-radius: 10px;
+}
+
+.user_name {
+  color: #ffffff;
+  font-size: 1.7rem;
+  transform: translateY(-10%);
+}
+
+.imgContainer {
+  height: 3rem;
+  width: 3rem;
+  margin-bottom: .4rem;
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    left: 0;
+    top: 0;
+    border-radius: 50%;
+    cursor: pointer;
+  }
+}
+
+.back_button {
+  background: none;
+  border: none;
+  transform: translateY(-10%);
+  transition: 150ms;
+  border-radius: 3px;
+  color: #ffffff;
+  font-size: 1.3rem;
+  height: 100%;
+  i {
+    font-size: 1.3rem;
+    margin-right: 1rem;
+    color: #ffffff;
+  }
+  &:hover {
+    background: rgb(208, 208, 208);
+  }
+  &:focus {
+    outline: none;
+  }
+}
+
+.foot_form {
+  display: flex;
+  i {
+    font-size: 2.2rem;
+    color: #ffffff;
+    margin: 0 .7rem;
+  }
+  margin-left: .9rem;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.send_icon {
+  transform: rotateX(-50%);
+  font-size: 1.5rem;
+  color: rgb(13, 159, 205)
+}
+
+.foot_text {
+  font-size: 1.2rem;
+  border-radius: 4px;
+  width: 100%;
+  padding: 0 .4rem;
+  &:focus {
+    outline: none;
+  }
+  &::-webkit-scrollbar {
+    width: 0;
+  }
+}

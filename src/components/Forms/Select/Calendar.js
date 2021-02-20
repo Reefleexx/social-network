@@ -1,5 +1,5 @@
-import React from 'react'
-import classes from './Calendar.module.scss'
+import React, {useState} from 'react'
+import classes from './Select.module.scss'
 
 const Calendar = (props) => {
 
@@ -32,17 +32,20 @@ const Calendar = (props) => {
 
     return(
         <div className={classes.wrapper}>
-            <select id={classes.day} >
+            <select
+                id={classes.day}
+                onChange={e => props.onChange(e, 'day')}
+            >
                 {
                     days.map(day => (
-                        <option value={day} key={day}>
+                        <option value={day + 1} key={day}>
                             {day + 1}
                         </option>
                     ))
                 }
             </select>
 
-            <select id={classes.month}>
+            <select id={classes.month} onChange={e => props.onChange(e, 'month')}>
                 {
                     months.map((month, i) => {
                         return (
@@ -54,11 +57,11 @@ const Calendar = (props) => {
                 }
             </select>
 
-            <select id={classes.year}>
+            <select id={classes.year} onChange={e => props.onChange(e, 'year')}>
                 {
                     years.map((year, i) => {
                         return (
-                            <option value={i} key={year}>
+                            <option value={year} key={year}>
                                 {year}
                             </option>
                         )

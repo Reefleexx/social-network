@@ -19,7 +19,7 @@ const AuthPage = (props) => {
             <Switch>
                 <Route path={'/authPage/registration'} exact={true} component={CreateAcc}/>
                 <Route path={'/authPage/auth'} exact={true} component={SignIn}/>
-                <Redirect from={'/authPage'} to={'/authPage/auth'}/>
+                <Redirect from={'/authPage'} to={'/authPage/auth'} component={SignIn}/>
             </Switch>
 
         </div>

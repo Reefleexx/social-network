@@ -7,7 +7,6 @@ import {checkIfAuth} from "./redux/actions/authActions";
 
 
 authentication.onAuthStateChanged(user => {
-    console.log(authentication.currentUser)
     func()
 })
 

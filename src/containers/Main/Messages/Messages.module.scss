@@ -1,5 +1,4 @@
 .Messages {
-  position: absolute;
   width: 78%;
   right: 0;
   display: flex;
@@ -8,21 +7,22 @@
 .messagesWrapper {
   width: 65%;
   border-radius: 3px;
-  //padding: .8vmin;
 }
 
 .messages_types {
-  width: 35%
+  width: 35%;
+  height: fit-content;
 }
 
 .messages_types {
   border-radius: 4px;
   color: #ffffff;
+  display: flex;
+  flex-direction: column;
   background: rgba(165, 165, 165, 1);
   margin-left: 3rem;
   margin-top: .8rem;
   padding: .8rem 0 .8rem 0;
-  height: 100%;
   font-size: 110%;
 }
 

@@ -1,45 +1,57 @@
 import React, {useState} from 'react'
 import classes from './Search.module.scss'
-import ItemSearch from "../../../components/UI/ItemSearch/ItemSearch";
+import {useDispatch, useSelector} from "react-redux";
+import {fetchSearchUser} from "../../../redux/actions/searchActions";
+import SearchItems from "./SearchItems";
+
 
 const Search = (props) => {
 
+    const usersList = useSelector(state => state.search.users)
+    const dispatch = useDispatch()
+
     const [value, changeValue] = useState('')
+
 
     const onSubmitHandler = e => {
         e.preventDefault();
-
-        const value = e.target[0].defaultValue
-        console.log(value)
+        if (value.trim()) dispatch(fetchSearchUser(value.trim()))
     }
 
     const onChange = e => {
+        e.preventDefault()
         changeValue(e.target.value)
     }
 
     return(
         <div className={classes.Search}>
             <div className={classes.search_wrapper}>
-                <form onSubmit={e => onSubmitHandler(e)}>
+                <form action={'submit'}>
                     <input
+                        onChange={e => onChange(e)}
                         type="text"
                         className={classes.input_field}
                         placeholder={'Search...'}
-                        onChange={e => onChange(e)}
                         value={value}
                     />
+                    <button
+                        type={'submit'}
+                        onClick={e => onSubmitHandler(e)}
+                        className={classes.go}
+                    >
+                        GO
+                    </button>
                 </form>
 
                 <div className={classes.search_items}>
-                    <ItemSearch/>
-                    <ItemSearch/>
-                    <ItemSearch/>
-                    <ItemSearch/>
-                    <ItemSearch/>
+                    <SearchItems
+                        usersList={usersList}
+                    />
                 </div>
             </div>
         </div>
     )
 }
+
 
 export default Search

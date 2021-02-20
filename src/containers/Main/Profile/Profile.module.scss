@@ -9,11 +9,10 @@ $backColor: rgba(165, 165, 165, 0.7);
   //background: rgba(40, 200, 224, 0.7);
   background: rgba(165, 165, 165, 0.7);
   border-radius: 5px;
-  padding: 1.5vmin 1.5vmin 4vmin 1.5vmin;
+  padding: 1.5vmin 1.5vmin 1.5rem 1.5vmin;
 }
 
 .Profile {
-  position: absolute;
   right: 0;
   width: 78%;
 }
@@ -53,14 +52,31 @@ $backColor: rgba(165, 165, 165, 0.7);
   }
 }
 
-.friends {
-  margin-top: 1.3vh;
-  margin-bottom: 1.3vh;
-  @include back;
+.buttons_under_photo {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+  button {
+    margin: 0 .1rem;
+    font-size: .84rem;
+    padding: .35rem;
+    width: 48%;
+    transition: 150ms;
+    &:hover {
+      //color: rgb(255, 255, 255)
+      background: rgb(212, 212, 212);
+    }
+  }
 }
 
-.friends_items {
-  margin: 0 0 3vh 0;
+.followers {
+  margin-top: .4rem;
+  @include back;
+  padding-bottom: 1rem;
+}
+
+.followers_items {
   display: flex;
   flex: 0 0 33.333%;
   justify-content: space-around;
@@ -70,6 +86,7 @@ $backColor: rgba(165, 165, 165, 0.7);
   width: 100%;
   margin-bottom: 1vh;
   position: relative;
+  cursor: default;
 }
 
 .barTextLeft {
@@ -86,6 +103,10 @@ $backColor: rgba(165, 165, 165, 0.7);
   right: 0;
   bottom: 0;
   padding-right: 1.2vmin;
+  transition: 150ms;
+  &:hover {
+    transform: scale(1.15);
+  }
 }
 
 .favorites {
@@ -121,6 +142,7 @@ $backColor: rgba(165, 165, 165, 0.7);
   right: 0;
   font-style: italic;
   position: absolute;
+  cursor: default;
 }
 
 .userNameItem {
@@ -173,4 +195,16 @@ hr:nth-of-type(2) {
   width: 60%;
   color: rgb(31, 117, 164);
   text-align: left;
+}
+
+.noFollows {
+  font-size: 1.2rem;
+  color: rgba(50,50,50, .8);
+  font-style: italic;
+  text-align: center;
+}
+
+.follows_count {
+  font-style: italic;
+
 }

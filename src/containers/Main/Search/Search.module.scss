@@ -12,6 +12,7 @@
     justify-content: center;
     margin-bottom: 2rem;
     width: 100%;
+    position: relative;
     input {
       width: 70%;
     }
@@ -40,4 +41,19 @@
   &:focus {
     outline: none;
   }
+}
+
+.go {
+  position: absolute;
+  opacity: .8;
+  color: rgb(52, 52, 52);
+  border: none;
+  right: 15%;
+  top: 50%;
+  &:focus {
+    outline: none;
+  }
+  margin: 0 .7rem;
+  transform: translateY(-45%);
+  background: none;
 }

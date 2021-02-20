@@ -23,34 +23,28 @@ const WarningWin = (props) => {
         dispatch(closeWarningWin())
     }
 
-    const onEscape = () => {
-        dispatch(closeWarningWin())
-    }
-
     return(
-        <CloseOnEscape onEscape={onEscape}>
-            <div className={classes.sign_back}>
-                <div className={classes.signWrapper}>
+        <div className={classes.sign_back}>
+            <div className={classes.signWrapper}>
             <span>
                 {text}
             </span>
-                    <form action={"submit"}>
-                        <Button
-                            type={'lightRed'}
-                            onClick={e => onSignOut(e)}
-                            text={'YES'}
-                            typeOfAction={'submit'}
-                        />
+                <form action={"submit"}>
+                    <Button
+                        type={'lightRed'}
+                        onClick={e => onSignOut(e)}
+                        text={'YES'}
+                        typeOfAction={'submit'}
+                    />
 
-                        <Button
-                            type={'green'}
-                            onClick={e => onCancel(e)}
-                            text={'NO'}
-                        />
-                    </form>
-                </div>
+                    <Button
+                        type={'green'}
+                        onClick={e => onCancel(e)}
+                        text={'NO'}
+                    />
+                </form>
             </div>
-        </CloseOnEscape>
+        </div>
     )
 }
 

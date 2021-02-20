@@ -11,7 +11,7 @@ const Alert = (props) => {
     }
 
     return(
-        <div className={'alert alert-danger ' + classes.Alert} role={'alert'}>
+        <div className={classes.Alert} role={'alert'}>
             {props.error}
             <i className={'fas fa-times'} onClick={e => onClick(e)}/>
         </div>
@@ -20,7 +20,7 @@ const Alert = (props) => {
 
 const mapStateToProps = state => {
     return {
-        a: state.app.error
+        error: state.app.error
     }
 }
 

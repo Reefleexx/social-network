@@ -1,0 +1,22 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: left;
+  textarea {
+    width: 100%;
+    border-radius: 4px;
+    border: 1px solid rgba(198, 198, 198, 0.9);
+    //box-shadow: 1px 1px 5px 1px rgba(65, 65, 76, 0.4);
+    font-size: 1.2rem;
+    padding: .4rem;
+    background-color: whitesmoke;
+    &:focus {
+      outline: none;
+    }
+  }
+}
+
+.area_label {
+  font-size: 2rem;
+  margin-bottom: .1rem;
+}

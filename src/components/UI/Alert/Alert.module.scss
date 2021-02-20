@@ -1,9 +1,15 @@
 .Alert {
   position: absolute;
-  z-index: 100;
+  z-index: 1000;
   width: 40%;
+  right: 50%;
+  transform: translateX(50%);
   margin: 1rem auto;
-  padding: 1.5rem .4rem;
+  background: rgb(248,215,218);
+  border-radius: 5px;
+  border: .8px solid rgb(245,194,199);
+  color: rgb(132,32,41);
+  padding: 1.5rem .7rem;
   font-size: 1.2rem;
   i {
     top: 0;

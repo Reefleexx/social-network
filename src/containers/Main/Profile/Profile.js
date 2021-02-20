@@ -1,18 +1,61 @@
-import React from 'react'
+import React, {useEffect, useState} from 'react'
 import classes from './Profile.module.scss'
 import photo from '../../../img/wide.jpg'
 import Photo from '../../../img/tall.jpg'
 import Button from "../../../components/Forms/Button/Button";
 import IconProfile from "../../../components/UI/IconProfile/IconProfile";
+import {useDispatch, useSelector} from "react-redux";
+import {fetchUser, followUser, openAllType, unFollowUser} from "../../../redux/actions/userActions";
+import {withRouter} from "react-router";
 
 
 const Profile = (props) => {
 
-    const renderBarText = (left, right) => {
+    const dispatch = useDispatch()
+    const uid = useSelector(state => state.auth.uid)
+    const user = useSelector(state => state.user)
+
+    const isFollow = Object.keys(user.followers).includes(uid)
+
+    const user_data = user.user_data
+    const path = props.match.params.uid
+
+    useEffect(() => {
+        dispatch(fetchUser(path ? path : uid))
+    }, [])
+
+    const onWhiteButton = (e, type) => {
+        e.preventDefault()
+
+        switch (type) {
+            case 'Follow':
+                dispatch(followUser(path))
+                break;
+            case 'Unfollow':
+                dispatch(unFollowUser(path))
+                break;
+            case 'send_message':
+                props.history.push(`/${path}/chat`)
+                break;
+
+            default:
+                return;
+        }
+    }
+
+    const onViewAll = (e, type) => {
+        e.preventDefault()
+        dispatch(openAllType(type))
+    }
+
+    const renderBarText = (left, type) => {
         return (
             <div className={`${classes.barText}`}>
-                <span className={`${classes.barTextLeft}`}>{left}</span>
-                <span className={`${classes.barTextRight}`}>{right}</span>
+                <span className={`${classes.barTextLeft}`}>
+                    {`${left} `}
+                    <span className={classes.follows_count}>{Object.keys(user[type]).length}</span>
+                </span>
+                {Object.keys(user[type]).length > 0 && <span onClick={e => onViewAll(e, type)} className={`${classes.barTextRight}`}>View all</span>}
             </div>
         )
     }
@@ -28,64 +71,125 @@ const Profile = (props) => {
             <div className={classes.mainData_item}>
                 <div className={classes.data_item}>
                     <span className={classes.data_itemLeft}>Name: </span>
-                    <span className={classes.data_itemRight}>Ivan</span>
+                    <span className={classes.data_itemRight}>{user_data.name}</span>
                 </div>
                 <div className={classes.data_item}>
                     <span className={classes.data_itemLeft}>Surname: </span>
-                    <span className={classes.data_itemRight}>Dzemich</span>
+                    <span className={classes.data_itemRight}>{user_data.surname}</span>
                 </div>
                 <div className={classes.data_item}>
                     <span className={classes.data_itemLeft}>Sex: </span>
-                    <span className={classes.data_itemRight}>Male</span>
+                    <span className={classes.data_itemRight}>{user_data.sex}</span>
                 </div>
                 <div className={classes.data_item}>
                     <span className={classes.data_itemLeft}>Date of birthday : </span>
-                    <span className={classes.data_itemRight}>10.10.2001</span>
+                    <span className={classes.data_itemRight}>
+                        {Object.keys(user_data.dateOfBirth).map((el, i) => {
+                            if (i < 2) {
+                                const isZero = parseInt(user_data.dateOfBirth[el]) < 10 ? '0' : ''
+                                return `${isZero}${user_data.dateOfBirth[el]}.`
+                            } else return user_data.dateOfBirth[el]
+                        })}
+                    </span>
                 </div>
                 <div className={classes.data_item}>
                     <span className={classes.data_itemLeft}>Location : </span>
-                    <span className={classes.data_itemRight}>Ukraine, Khmelnitsky</span>
+                    <span className={classes.data_itemRight}>{user_data.location.country}, {user_data.location.region}</span>
                 </div>
-                <div className={classes.data_item}>
-                    <span className={classes.data_itemLeft}>About myself : </span>
-                    <span className={classes.data_itemRight}>I am what I am and you go fuck)</span>
-                </div>
+                {
+                    user_data.about ? <div className={classes.data_item}>
+                        <span className={classes.data_itemLeft}>About myself : </span>
+                        <span className={classes.data_itemRight}>{user_data.about}</span>
+                    </div> : null
+                }
 
-                {/*<div className={classes.data_item_left}>*/}
-                {/*    <span>Name :</span>*/}
-                {/*    <span> :</span>*/}
-                {/*    <span>Sex :</span>*/}
-                {/*    <span>Date of birthday :</span>*/}
-                {/*    <span>Location :</span>*/}
-                {/*    <span>About myself :</span>*/}
-                {/*</div>*/}
-                {/*<div className={classes.data_item_right}>*/}
-                {/*    <span>Ivan</span>*/}
-                {/*    <span>Dzemich</span>*/}
-                {/*    <span>Male</span>*/}
-                {/*    <span>10.10.2001</span>*/}
-                {/*    <span>Ukraine, Khmelnitsky</span>*/}
-                {/*    <span>I am what I am and you go fuck)</span>*/}
-                {/*</div>*/}
             </div>
         )
     }
 
-    const renderProfile_items = () => {
-        return (
-            <>
-                <div className={classes.friends_items}>
-                    <IconProfile name={'Peter'} photo={photo}/>
-                    <IconProfile name={'Ivan'} photo={photo}/>
-                    <IconProfile name={'Dmitriy'} photo={photo}/>
+    const renderProfile_items = type => {
+
+        const users = Object.keys(user[type]).map(uid => {
+            return {
+                uid,
+                user_name: user[type][uid].user_name
+            }
+        })
+
+        if (users.length <= 3 && users.length > 0) {
+            return (
+                <div className={classes.followers_items}>
+                    {
+                        users.map(user => <IconProfile key={user.uid}
+                                                       name={user.user_name}
+                                                       photo={photo}
+                                                       uid={user.uid}/>)
+                    }
                 </div>
-                <div className={classes.friends_items}>
-                    <IconProfile name={'Peter'} photo={Photo}/>
-                    <IconProfile name={'Ivan'} photo={Photo}/>
-                    <IconProfile name={'Dmitriy'} photo={Photo}/>
+            )
+        }
+
+        if (users.length > 3) {
+            return (
+                <>
+                    <div className={classes.followers_items}>
+                        {
+                            users.slice(0, 3).map(user => <IconProfile key={user.uid}
+                                                                       name={user.user_name}
+                                                                       photo={photo}
+                                                                       uid={user.uid}/>)
+                        }
+                    </div>
+                    <div className={classes.followers_items}>
+                        {
+                            users.slice(3, 6).map(user => <IconProfile key={user.uid}
+                                                                       name={user.user_name}
+                                                                       photo={photo}
+                                                                       uid={user.uid}/>)
+                        }
+                    </div>
+                </>
+            )
+        } else {
+            return (
+                <div className={classes.followers_items}>
+                    <span className={classes.noFollows}>
+                        {type === 'followers' ? 'This user has no followers' : `This user doesn't follow anybody`}
+                    </span>
                 </div>
-            </>
-        )
+            )
+        }
+    }
+
+    const renderUnderPhotoButtons = () => {
+        if (path) {
+            const type = isFollow ? 'Unfollow' : 'Follow'
+            return (
+                <div className={classes.buttons_under_photo}>
+                    <Button
+                        type={'white'}
+                        text={type}
+                        onClick={e => onWhiteButton(e, type)}
+                        size={'2'}
+                    />
+                    <Button
+                        type={'white'}
+                        text={'Send a message'}
+                        onClick={e => onWhiteButton(e, 'send_message')}
+                        size={'2'}
+                    />
+                </div>
+            )
+        } else {
+            return (
+                <Button
+                    type={'white'}
+                    text={'New default photo'}
+                    onClick={e => e.preventDefault('new_photo')}
+                    size={'3'}
+                />
+            )
+        }
     }
 
     return(
@@ -97,22 +201,19 @@ const Profile = (props) => {
                         <div className={classes.photo_img}>
                             <img src={Photo} alt="#"/>
                         </div>
-                        <Button
-                            type={'white'}
-                            text={'New default photo'}
-                            onClick={e => e.preventDefault()}
-                            size={'3'}
-                        />
+                        {
+                            path === uid ? null : renderUnderPhotoButtons()
+                        }
                     </div>
 
-                    <div className={`${classes.friends}`}>
-                        {renderBarText('Friends', 'View all')}
-                        {renderProfile_items()}
+                    <div className={`${classes.followers}`}>
+                        {renderBarText('Followers', 'followers')}
+                        {renderProfile_items('followers')}
                     </div>
 
                     <div className={`${classes.favorites}`}>
-                        {renderBarText('Favorites', 'View all')}
-                        {renderProfile_items()}
+                        {renderBarText('Following', 'following')}
+                        {renderProfile_items('following')}
                     </div>
 
                 </div>
@@ -122,8 +223,10 @@ const Profile = (props) => {
                     <div className={classes.userData}>
                         <div className={classes.userName}>
                             <div className={classes.userNameItem}>
-                                <span className={classes.userName_text}>Vanya__</span>
-                                <span className={classes.userName_edit}>Edit username</span>
+                                <span className={classes.userName_text}>{user_data.user_name}</span>
+                                {
+                                    path ? null : <span className={classes.userName_edit}>Edit user name</span>
+                                }
                             </div>
                             <span className={classes.userStatus}>online</span>
                         </div>
@@ -133,11 +236,13 @@ const Profile = (props) => {
                         <div className={classes.mainUserData}>
 
                             {renderMainUserData()}
-                            <Button
-                                type={'forProfile'}
-                                onClick={e => e.preventDefault()}
-                                text={'Edit user data'}
-                            />
+                            {
+                                path ? null : <Button
+                                    type={'forProfile'}
+                                    onClick={e => e.preventDefault()}
+                                    text={'Edit user data'}
+                                />
+                            }
                         </div>
 
                         <hr id={classes.fuckingHr}/>
@@ -160,4 +265,4 @@ const Profile = (props) => {
     )
 }
 
-export default Profile
+export default withRouter(Profile)

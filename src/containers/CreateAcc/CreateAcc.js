@@ -1,15 +1,20 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import classes from './CreateAcc.module.scss'
 import Button from "../../components/Forms/Button/Button";
 import Input from "../../components/Forms/Input/Input";
 import {withRouter} from "react-router";
 import Calendar from "../../components/Forms/Select/Calendar";
-import {connect} from "react-redux";
+import {useDispatch} from "react-redux";
 import {fetchSignUp} from "../../redux/actions/authActions";
 import {hideAlert} from "../../redux/actions/appActions";
+import Country from "../../components/Forms/Select/Country";
+import TextArea from "../../components/Forms/TextArea/TextArea";
+import Sex from "../../components/Forms/Select/Sex";
 
 
 const CreateAcc = (props) => {
+
+    const dispatch = useDispatch()
 
     const [values, changeValues] = useState({
         user_name: '',
@@ -24,10 +29,44 @@ const CreateAcc = (props) => {
         user_name: false,
         surname: false,
         name: false,
-        about: false,
+        about: true,
         email: false,
         password: false
     })
+    const [dateValues, changeDate] = useState({
+        day: 1,
+        month: 1,
+        year: new Date().getFullYear()
+    })
+    const [location, changeLocation] = useState({
+        country: 'Ukraine',
+        region: 'Khmelnytskyi'
+    })
+    const [sex, changeSex] = useState('')
+
+    const calendarHandler = (e, type) => {
+        e.preventDefault()
+        changeDate(prev => {
+            return {
+                ...prev,
+                [type]: parseInt(e.target.value)
+            }
+        })
+    }
+
+    const countryHandler = (val, type) => {
+        changeLocation(state => {
+            return {
+                ...state,
+                [type]: val
+            }
+        })
+    }
+
+    const sexHandler = (e) => {
+        e.preventDefault()
+        changeSex(e.target.value)
+    }
 
     const onSubmit = e => {
         e.preventDefault()
@@ -37,14 +76,19 @@ const CreateAcc = (props) => {
             return result && isValid[el]
         }, true)
 
-        if (isAllValid) {
-            props.fetchUserData(values)
+        if (isAllValid && sex) {
+            dispatch(fetchSignUp({
+                ...values,
+                dateOfBirth: {...dateValues},
+                sex: sex,
+                location: {...location}
+            }))
         }
     }
 
     const onSignIn = e => {
         e.preventDefault()
-        props.hideAlert()
+        dispatch(hideAlert())
         props.history.push('/authPage/auth')
     }
 
@@ -53,20 +97,20 @@ const CreateAcc = (props) => {
             <div className={classes.wrapper}>
                 <Button type={'orange'} text={'Go back'} typeOfAction={'button'} onClick={e => {
                     e.preventDefault()
-                    props.hideAlert()
+                    dispatch(hideAlert())
                     props.history.push('/')
                 }}/>
 
                 <div className={classes.input_field}>
 
                     <form action={'submit'} onSubmit={e => onSubmit(e)}>
+
                         <Input
                             type={'user_name'}
                             errorToggler={isErrorHandler}
                             error={isError}
                             onChange={changeValues}
                             validChange={validChange}
-                            // e => onChange(e, 'user_name'
                         />
 
                         <Input
@@ -86,17 +130,42 @@ const CreateAcc = (props) => {
                         />
 
                         <span className={classes.date}>
+                            Sex
+                        </span>
+
+                        <Sex
+                            onChange={sexHandler}
+                            error={!sex && isError ? 'Please choose your sex' : null}
+                        />
+
+                        <span className={classes.date}>
                             Date of birthday
                         </span>
 
-                        <Calendar/>
+                        <Calendar
+                            onChange={calendarHandler}
+                        />
 
-                        <Input
-                            type={'about'}
-                            errorToggler={isErrorHandler}
-                            error={isError}
+                        <span className={classes.date}>
+                            Chose your location
+                        </span>
+
+                        <Country
+                            onChange={countryHandler}
+                            values={location}
+                        />
+
+                        {/*<Input*/}
+                        {/*    type={'about'}*/}
+                        {/*    errorToggler={isErrorHandler}*/}
+                        {/*    error={isError}*/}
+                        {/*    onChange={changeValues}*/}
+                        {/*    validChange={validChange}*/}
+                        {/*/>*/}
+
+                        <TextArea
                             onChange={changeValues}
-                            validChange={validChange}
+                            label={'About'}
                         />
 
                         <Input
@@ -135,11 +204,5 @@ const CreateAcc = (props) => {
     )
 }
 
-const mapDispatchToProps = (dispatch) => {
-    return {
-        fetchUserData: data => dispatch(fetchSignUp(data)),
-        hideAlert: () => dispatch(hideAlert())
-    }
-}
 
-export default withRouter(connect(null, mapDispatchToProps)(CreateAcc))
+export default withRouter(CreateAcc)

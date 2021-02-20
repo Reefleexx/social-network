@@ -1,13 +1,18 @@
 .MainPage {
   height: 100%;
-  min-height: 100vh;
+  //min-height: 100vh;
   position: relative;
 }
 
-.mainArea{
 
-}
 
 .some {
   border: 2px solid red;
+}
+
+.mainRow {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-top: 1.4rem;
 }

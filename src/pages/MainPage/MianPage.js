@@ -8,8 +8,8 @@ import Messages from "../../containers/Main/Messages/Messages";
 import Search from "../../containers/Main/Search/Search";
 import Favorites from "../../containers/Main/Favorites/Favorites";
 import {useSelector} from "react-redux";
+import Chat from "../../containers/Main/Chat/Chat";
 
-const some = () => <div className={'col-9 ' + classes.some}/>
 
 const MainPage = (props) => {
 
@@ -20,9 +20,10 @@ const MainPage = (props) => {
     if (auth.uid) {
         routes = <Switch>
             <Route path={'/search'} component={Search} exact={true}/>
+            <Route path={'/search/:uid'} component={() => <Profile/>} exact={true}/>
+            <Route path={'/:uid/chat'} component={Chat} exact={true}/>
             <Route path={'/messages'} component={Messages} exact={true}/>
-            <Route path={'/messages/:id'} component={some} exact={true}/>
-            <Route path={'/profile'} component={Profile} exact={true}/>
+            <Route path={'/profile'} component={() => <Profile/>} exact={true}/>
             <Route path={'/favorites'} component={Favorites} exact={true}/>
             <Route path={'/'} component={Search} exact={true}/>
             <Redirect to={'/'} componenet={Search} />
@@ -30,6 +31,7 @@ const MainPage = (props) => {
     } else {
         routes = <Switch>
             <Route path={'/search'} component={Search} exact={true}/>
+            {/*<Route path={'/search/:uid'} component={Profile} exact={true}/>*/}
             <Route path={'/'} component={Search} exact={true}/>
             <Redirect to={'/'} componenet={Search} />
         </Switch>
@@ -39,7 +41,7 @@ const MainPage = (props) => {
         <div className={'container-lg mt-3 justify-content-between' + classes.MainPage}>
             <Header/>
 
-            <div className={'row p-2 mt-3'} style={{position: 'relative'}}>
+            <div className={classes.mainRow} >
                 <Sidebar/>
 
                 {

@@ -3,19 +3,29 @@ import {AUTH_CHECKED, CHECK_AUTH, FETCH_AUTH, FETCH_SIGN_IN, FETCH_SIGN_UP, SIGN
 export const fetchSignUp = (data) => {
     return {
         type: FETCH_SIGN_UP,
-        data
+        data: {
+            user_name: data.user_name,
+            name: data.name,
+            surname: data.surname,
+            location: data.location,
+            sex: data.sex,
+            dateOfBirth: data.dateOfBirth,
+            about: data.about
+        },
+        email: data.email,
+        password: data.password
     }
 }
 
 export const fetchSignIn = (data) => {
     return {
         type: FETCH_SIGN_IN,
-        data
+        email: data.email,
+        password: data.password
     }
 }
 
 export const fetchAuth = (uid) => {
-    console.log(uid)
     return {
         type: FETCH_AUTH,
         uid

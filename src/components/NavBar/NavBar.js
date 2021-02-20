@@ -19,14 +19,14 @@ const NavBar = (props) => {
 
     if (auth.uid) {
         navLinks = [
-            {text: 'Messages', to: 'messages', exact: true},
-            {text: 'Profile', to: 'profile', exact: true},
-            {text: 'Favorites', to: 'favorites', exact: true},
-            {text: 'Search', to: 'search', exact: true}
+            {text: 'Messages', to: '/messages', exact: true},
+            {text: 'Profile', to: '/profile', exact: true},
+            {text: 'Favorites', to: '/favorites', exact: true},
+            {text: 'Search', to: '/search', exact: true}
         ]
     } else {
         navLinks = [
-            {text: 'Search', to: 'search', exact: true}
+            {text: 'Search', to: '/search', exact: true}
         ]
     }
 

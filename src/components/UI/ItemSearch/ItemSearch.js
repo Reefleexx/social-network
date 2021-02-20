@@ -8,17 +8,18 @@ const ItemSearch = (props) => {
 
     const onClickHandler = e => {
         e.preventDefault()
-        props.history.push(`/search/ ${props.link}`)
+        console.log(props.uid)
+        props.history.push(`/search/${props.uid}`)
     }
 
     return(
-        <div className={classes.ItemSearch}>
+        <div className={classes.ItemSearch} key={props.i}>
             <div className={classes.img_container}>
                 <img src={photo} alt={'photo'}/>
             </div>
 
             <span className={classes.name}>
-                User name
+                {props.user_name}
             </span>
 
             <Button
