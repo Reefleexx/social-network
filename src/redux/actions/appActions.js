@@ -1,6 +1,6 @@
 import {
     CLOSE_WARNING_WIN,
-    HIDE_ALERT,
+    HIDE_ALERT, HIDE_NEW_MESSAGE,
     OPEN_WARNING_WIN,
     SHOW_ALERT, SHOW_NEW_MESSAGE, SUCCESS_NEW_MESSAGE
 } from "../types";
@@ -45,8 +45,24 @@ export function closeWarningWin () {
     }
 }
 
+
+////////////// New message pop up \\\\\\\\\\\\\\\\\
+let messageTimer
+
 export const showNewMessage = message => {
-    console.log(message)
+    return dispatch => {
+        dispatch(hideNewMessage())
+        clearTimeout(messageTimer)
+
+        messageTimer = setTimeout(() => {
+            dispatch(hideNewMessage())
+        }, 200000)
+        dispatch(fetchNewMessage(message))
+    }
+
+}
+
+const fetchNewMessage = message => {
     return {
         type: SHOW_NEW_MESSAGE,
         message
@@ -59,5 +75,12 @@ export const successNewMessage = (uid, user_name) => {
         message: {
             uid, user_name
         }
+    }
+}
+
+export const hideNewMessage = () => {
+    clearTimeout(messageTimer)
+    return {
+        type: HIDE_NEW_MESSAGE
     }
 }

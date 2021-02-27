@@ -3,15 +3,14 @@ import classes from './NewMessage.module.scss'
 import photo from "../../../img/wide.jpg";
 import {useDispatch} from "react-redux";
 import {withRouter} from "react-router";
+import {hideNewMessage} from "../../../redux/actions/appActions";
 
 
 const NewMessage = (props) => {
 
-    console.log(props)
     const dispatch = useDispatch()
 
     useEffect(() => {
-
     }, [])
 
     const openUserProfile = e => {
@@ -19,11 +18,16 @@ const NewMessage = (props) => {
         props.history.push(`/search/${props.userUid}`)
     }
 
+    const onClose = e => {
+        e.preventDefault()
+        dispatch(hideNewMessage())
+    }
+
     return(
         <div className={classes.NewMessage}>
             <div className={classes.wrapper}>
 
-                <i className={'fa fa-times'}/>
+                <i className={'fa fa-times'} onClick={e => onClose(e)}/>
 
                 <div className={classes.imgContainer}>
                     <img src={photo} alt={'alt'} onClick={e => openUserProfile(e)}/>

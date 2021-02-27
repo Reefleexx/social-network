@@ -8,9 +8,10 @@ import Drawer from "../containers/Drawer/Drawer";
 import {closeAll} from "../redux/actions/userActions";
 import {closeWarningWin} from "../redux/actions/appActions";
 import NewMessage from "../components/UI/NewMessage/NewMessage";
+import {CSSTransition} from "react-transition-group";
+import messageClasses from '../components/UI/NewMessage/NewMessage.module.scss'
 
 const Layout = (props) => {
-
     const dispatch = useDispatch()
 
     const allClose = () => {
@@ -21,7 +22,8 @@ const Layout = (props) => {
         dispatch(closeWarningWin())
     }
 
-    console.log(props)
+    const shouldMessage = props.message && Object.entries(props.message).length !== 0
+
     return(
         <div className={classes.Layout}>
 
@@ -46,12 +48,24 @@ const Layout = (props) => {
             }
 
             {
-                props.message ?
-                    <NewMessage
-                        amount={1}
-                        user_name={props.message.user_name}
-                        userUid={props.message.uid}
-                    /> : ''
+                    <CSSTransition
+                        in={shouldMessage}
+                        timeout={200}
+                        classNames={{
+                            enter: messageClasses['message-enter'],
+                            enterActive: messageClasses['message-enter-active'],
+                            exit: messageClasses['message-exit'],
+                            exitActive: messageClasses['message-exit-active']
+                        }}
+                        mountOnEnter
+                        unmountOnExit
+                    >
+                        <NewMessage
+                            amount={1}
+                            user_name={shouldMessage ? props.message.user_name : ''}
+                            userUid={shouldMessage ? props.message.uid : ''}
+                        />
+                    </CSSTransition>
             }
 
             <main className={props.warningWin || props.allType ? classes.main_opacity : null}>

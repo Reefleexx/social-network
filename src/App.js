@@ -60,9 +60,12 @@ function App() {
                                 timeStamp:  Object.keys(secret)[0],
                                 user:  secret[Object.keys(secret)[0]].sender
                             }
-                            console.log(message)
                             counter += 1
-                            if (counter > snap.numChildren()) dispatch(showNewMessage(message))
+                            if (user.uid !== message.user) {
+                                if (counter > snap.numChildren()) {
+                                    dispatch(showNewMessage(message))
+                                }
+                            }
                         })
 
                     })
