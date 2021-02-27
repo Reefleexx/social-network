@@ -1,5 +1,5 @@
 import {
-    CLEAR_USER_DATA, CLOSE_ALL,
+    CLEAR_USER_DATA, CLOSE_ALL, FETCH_PRESENCE,
     FOLLOWERS_SUCCESS,
     FOLLOWING_SUCCESS,
     OPEN_ALL,
@@ -7,6 +7,7 @@ import {
 } from "../types";
 
 const initialState = {
+    presence: 'offline',
     user_data: {
         location: {
             country: '___',
@@ -20,7 +21,7 @@ const initialState = {
         name: '___',
         surname: '___',
         user_name: '___',
-        about: ''
+        about: '',
     },
     followers: {},
     following: {},
@@ -33,6 +34,12 @@ export default function userReducer (state = initialState, action) {
             return {
                 ...state,
                 user_data: action.data
+            }
+        }
+        case FETCH_PRESENCE: {
+            return {
+                ...state,
+                presence: action.presence
             }
         }
         case CLEAR_USER_DATA: {

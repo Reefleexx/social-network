@@ -7,6 +7,7 @@ import AllFollows from "../containers/allFollows/allFollows";
 import Drawer from "../containers/Drawer/Drawer";
 import {closeAll} from "../redux/actions/userActions";
 import {closeWarningWin} from "../redux/actions/appActions";
+import NewMessage from "../components/UI/NewMessage/NewMessage";
 
 const Layout = (props) => {
 
@@ -20,6 +21,7 @@ const Layout = (props) => {
         dispatch(closeWarningWin())
     }
 
+    console.log(props)
     return(
         <div className={classes.Layout}>
 
@@ -42,6 +44,16 @@ const Layout = (props) => {
                     </Drawer>
                     : null
             }
+
+            {
+                props.message ?
+                    <NewMessage
+                        amount={1}
+                        user_name={props.message.user_name}
+                        userUid={props.message.uid}
+                    /> : ''
+            }
+
             <main className={props.warningWin || props.allType ? classes.main_opacity : null}>
                 {props.children}
             </main>
@@ -55,7 +67,8 @@ const mapStateToProps = state => {
         allOpen: state.user.allType,
         error: state.app.error,
         allType: state.user.allType,
-        user_name: state.user.user_data.user_name
+        user_name: state.user.user_data.user_name,
+        message: state.app.message
     }
 }
 

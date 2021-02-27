@@ -2,7 +2,7 @@ import {
     CLOSE_WARNING_WIN,
     HIDE_ALERT,
     OPEN_WARNING_WIN,
-    SHOW_ALERT
+    SHOW_ALERT, SHOW_NEW_MESSAGE, SUCCESS_NEW_MESSAGE
 } from "../types";
 
 let timer1
@@ -42,5 +42,22 @@ export function openWarningWin (text) {
 export function closeWarningWin () {
     return {
         type: CLOSE_WARNING_WIN
+    }
+}
+
+export const showNewMessage = message => {
+    console.log(message)
+    return {
+        type: SHOW_NEW_MESSAGE,
+        message
+    }
+}
+
+export const successNewMessage = (uid, user_name) => {
+    return {
+        type: SUCCESS_NEW_MESSAGE,
+        message: {
+            uid, user_name
+        }
     }
 }

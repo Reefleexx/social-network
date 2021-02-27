@@ -1,11 +1,12 @@
 import {
     SHOW_ALERT,
-    HIDE_ALERT, OPEN_WARNING_WIN, CLOSE_WARNING_WIN
+    HIDE_ALERT, OPEN_WARNING_WIN, CLOSE_WARNING_WIN, SHOW_NEW_MESSAGE, HIDE_NEW_MESSAGE, SUCCESS_NEW_MESSAGE
 } from '../types'
 
 const initialState = {
     error: null,
-    window: null
+    window: null,
+    message: null
 }
 
 export default function appReducer (state = initialState, action) {
@@ -33,6 +34,19 @@ export default function appReducer (state = initialState, action) {
                 window: null
             }
         }
+        case SUCCESS_NEW_MESSAGE: {
+            return {
+                ...state,
+                message: action.message
+            }
+        }
+        case HIDE_NEW_MESSAGE: {
+            return {
+                ...state,
+                message: {}
+            }
+        }
+
         default: return state
     }
 }

@@ -9,6 +9,7 @@
     "axios": "^0.21.1",
     "bootstrap": "^4.5.3",
     "firebase": "^8.2.3",
+    "firebase-tools": "^9.4.0",
     "is_js": "^0.9.0",
     "node-sass": "4.14.1",
     "react": "^17.0.1",

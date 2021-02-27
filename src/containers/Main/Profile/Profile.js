@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import React, {useEffect} from 'react'
 import classes from './Profile.module.scss'
 import photo from '../../../img/wide.jpg'
 import Photo from '../../../img/tall.jpg'
@@ -228,7 +228,7 @@ const Profile = (props) => {
                                     path ? null : <span className={classes.userName_edit}>Edit user name</span>
                                 }
                             </div>
-                            <span className={classes.userStatus}>online</span>
+                            <span className={classes.userStatus}>{user.presence}</span>
                         </div>
 
                         <hr/>

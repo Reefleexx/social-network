@@ -1,46 +1,30 @@
 import {takeLeading, put, call, select} from "redux-saga/effects";
-import {FETCH_USER_DATA, FETCH_USER_FOLLOWERS, FETCH_USER_FOLLOWING, FOLLOW_USER, UNFOLLOW_USER} from "../types";
+import {
+    FETCH_PRESENCE,
+    FETCH_USER_DATA,
+    FETCH_USER_FOLLOWERS,
+    FETCH_USER_FOLLOWING,
+    FOLLOW_USER,
+    UNFOLLOW_USER
+} from "../types";
 import {showAlert} from "../actions/appActions";
 import {database} from "../../bl/firebaseConfig";
-import {followSuccess, successUser} from "../actions/userActions";
+import {followSuccess, presenceAction, successUser} from "../actions/userActions";
 
 export default function* profileWatcher () {
     yield takeLeading(FETCH_USER_DATA, (action) => userDataWorker(action.uid))
+    yield takeLeading(FETCH_PRESENCE, action => userPresenceWorker(action.uid))
     yield takeLeading(FETCH_USER_FOLLOWERS, (action) => userFollowersWorker(action.uid, 'followers'))
     yield takeLeading(FETCH_USER_FOLLOWING, (action) => userFollowingWorker(action.uid, 'following'))
     yield takeLeading(FOLLOW_USER, (action) => followWorker(action.uid, true))
     yield takeLeading(UNFOLLOW_USER, (action) => followWorker(action.uid, false))
 }
 
-// function* userFollowsWorker (uid, type) {
-//     try {
-//         if (type) {
-//
-//             if (type === 'followers') {
-//                 const [allUids, followersNames] = yield call(() => getAllFollows(uid, type))
-//                 const followingNames = {}
-//
-//                 yield put(followSuccess(allUids, followersNames, followingNames))
-//             }
-//
-//             if (type === 'following') {
-//                 const [allUids, followingNames] = yield call(() => getAllFollows(uid, type))
-//                 const followersNames = {}
-//
-//                 yield put(followSuccess(allUids, followersNames, followingNames))
-//             }
-//
-//         } else {
-//             const [allUids, followersNames, followingNames] = yield call(() => getAllFollows(uid))
-//
-//             yield put(followSuccess(allUids, followersNames, followingNames))
-//         }
-//
-//    } catch (e) {
-//         console.log(e)
-//         yield put(showAlert(e.message))
-//    }
-// }
+
+function* userPresenceWorker (uid) {
+    const presence = yield call(() => fetchPresence(uid))
+    yield put(presenceAction(presence))
+}
 
 function* userFollowersWorker (uid, type) {
     try {
@@ -159,10 +143,19 @@ async function fetchUnFollow (userUid, currentUser) {
 
 async function fetchGetUserData (uid) {
     let data
-
-    await database.ref(`users/${uid}/user_data`).once("value", (response) => {
-        data = response.val()
+    await database.ref(`users/${uid}`).once('value', (response) => {
+        data = response.val().user_data
     })
 
     return data
+}
+
+async function fetchPresence (uid) {
+    let presence
+
+    await database.ref(`users/${uid}/presence`).once('value', snapshot => {
+        presence = snapshot.val()
+    })
+
+    return presence
 }

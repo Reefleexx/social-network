@@ -8,7 +8,6 @@ const ItemSearch = (props) => {
 
     const onClickHandler = e => {
         e.preventDefault()
-        console.log(props.uid)
         props.history.push(`/search/${props.uid}`)
     }
 

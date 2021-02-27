@@ -1,5 +1,5 @@
 import {
-    CLEAR_USER_DATA, CLOSE_ALL,
+    CLEAR_USER_DATA, CLOSE_ALL, FETCH_PRESENCE,
     FETCH_USER_DATA, FETCH_USER_FOLLOWERS, FETCH_USER_FOLLOWING,
     FOLLOW_USER, FOLLOWERS_SUCCESS, FOLLOWING_SUCCESS, OPEN_ALL,
     SUCCESS_USER_DATA,
@@ -11,6 +11,14 @@ export const fetchUser = (uid) => {
         dispatch(fetchUserData(uid))
         dispatch(fetchUserFollowers(uid))
         dispatch(fetchUserFollowing(uid))
+        dispatch(fetchPresence(uid))
+    }
+}
+
+export const fetchPresence = uid => {
+    return {
+        type: FETCH_PRESENCE,
+        uid
     }
 }
 
@@ -99,5 +107,12 @@ export const openAllType = type => {
 export const closeAll = () => {
     return {
         type: CLOSE_ALL
+    }
+}
+
+export const presenceAction = presence => {
+    return {
+        type: FETCH_PRESENCE,
+        presence
     }
 }
