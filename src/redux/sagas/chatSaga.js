@@ -1,14 +1,25 @@
-import {takeLeading, put, call} from "redux-saga/effects";
-import {FETCH_MESSAGES, FETCH_NEW_MESSAGE, FETCH_USER_DATA_CHAT} from "../types";
+import {takeLeading, put, call, all} from "redux-saga/effects";
+import {FETCH_ALL_CHATS, FETCH_MESSAGES, FETCH_NEW_MESSAGE, FETCH_USER_DATA_CHAT} from "../types";
 import {showAlert} from "../actions/appActions";
 import {authentication, database} from "../../bl/firebaseConfig";
-import {fetchUserSuccess, successMessages} from "../actions/chatActions";
+import {fetchUserSuccess, successAllChats, successMessages} from "../actions/chatActions";
+import {decodeKey} from "../../bl/firebaseFunctions";
 
 
 export default function* chatWatcher () {
     yield takeLeading(FETCH_USER_DATA_CHAT, action => userDataWorker(action.uid))
     yield takeLeading(FETCH_NEW_MESSAGE, action => messageWorker(action.text, action.timeStamp, action.uid))
     yield takeLeading(FETCH_MESSAGES, action => allMessagesWorker(action.uid))
+    yield takeLeading(FETCH_ALL_CHATS, action => allChatsWorker(action.uid))
+}
+
+function* allChatsWorker (uid) {
+    try {
+        const latestChats = yield call(() => getAllChats(uid))
+        yield put(successAllChats(latestChats))
+    } catch (e) {
+        showAlert(e.message)
+    }
 }
 
 function* allMessagesWorker (uid) {
@@ -100,4 +111,63 @@ async function getAllMessages (chatKey) {
     })
 
     return messages
+}
+
+async function getAllChats (uid) {
+
+    const userUids = {}
+    const userNames = {}
+    const userMessages = {}
+
+    const latestChats = []
+
+    await database.ref(`users/${uid}/chats`).once('value',  snap => {
+        snap.forEach(snapEl => {
+            userUids[snapEl.val()] = snapEl.key
+        })
+    })
+
+    ////////////////GET chat keys array \\\\\\\\\\\\\\\\\\
+    let chatKeysArr = Object.keys(userUids)
+
+    ///////////////////  GET user information  \\\\\\\\\\\\\\\\\\\\
+    for (const chatKey of chatKeysArr) {
+        const userUid = userUids[chatKey]
+
+        await database.ref(`users/${userUid}/user_data`).once('value', userSnap => {
+            userNames[chatKey] = userSnap.val().user_name
+        })
+    }
+
+    //////////////// GET user messages \\\\\\\\\\\\\\\\\\\\
+    for (const chatKey of chatKeysArr) {
+        const chatRef = database.ref(`chats/${chatKey}`)
+
+        await chatRef.once('value', chatSnap => {
+            userMessages[chatKey] = chatSnap.val()
+        })
+    }
+
+    //////////////// GET last elements \\\\\\\\\\\\\\\\\\\\
+    Object.keys(userMessages).forEach((chatKey, i, chatArr) => {
+        const chatMessages = userMessages[chatKey]
+
+        latestChats.push({
+            chatKey: chatKey,
+            user_uid: userUids[chatKey],
+            user_name: userNames[chatKey],
+            message: {
+                time: Object.keys(chatMessages)[Object.keys(chatMessages).length - 1],
+                text: chatMessages[Object.keys(chatMessages)[Object.keys(chatMessages).length - 1]].text,
+                sender: chatMessages[Object.keys(chatMessages)[Object.keys(chatMessages).length - 1]].sender
+            }
+        })
+    })
+
+    ///////////////Order chats \\\\\\\\\\\\\\\\
+    latestChats.sort(function(first, second) {return second.message.time - first.message.time})
+
+    console.log(latestChats)
+
+    return latestChats
 }

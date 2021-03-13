@@ -1,10 +1,17 @@
-import {CLEAR_CHAT_STORE, FETCH_UPDATE_MESSAGES, SUCCESS_MESSAGES, SUCCESS_USER_DATA_CHAT} from "../types";
+import {
+    CLEAR_CHAT_STORE,
+    FETCH_UPDATE_MESSAGES,
+    SUCCESS_ALL_CHATS,
+    SUCCESS_MESSAGES,
+    SUCCESS_USER_DATA_CHAT
+} from "../types";
 
 const initialState = {
     user_name: '___',
     photo_url: '___',
     messages: {},
-    chatKey: null
+    chatKey: null,
+    latestChats: []
 }
 
 export default function chatReducer (state = initialState, action) {
@@ -33,7 +40,12 @@ export default function chatReducer (state = initialState, action) {
                 messages: {...state.messages, [action.key]: action.message}
             }
         }
-
+        case SUCCESS_ALL_CHATS: {
+            return {
+                ...state,
+                latestChats: action.latestChats
+            }
+        }
         default: return state
     }
 }

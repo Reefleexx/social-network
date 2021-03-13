@@ -4,7 +4,8 @@ import {
     FETCH_NEW_MESSAGE, FETCH_UPDATE_MESSAGES,
     FETCH_USER_DATA_CHAT,
     SUCCESS_MESSAGES,
-    SUCCESS_USER_DATA_CHAT
+    SUCCESS_USER_DATA_CHAT,
+    FETCH_ALL_CHATS, SUCCESS_ALL_CHATS
 } from "../types";
 
 export const fetchUserData = uid => {
@@ -50,5 +51,25 @@ export const fetchUpdateMessages = (key, message) => {
     return {
         type: FETCH_UPDATE_MESSAGES,
         key, message
+    }
+}
+
+export const fetchAllChats = (uid) => {
+    return {
+        type: FETCH_ALL_CHATS,
+        uid
+    }
+}
+
+export const successAllChats = (latestChats) => {
+
+    // console.log(chats)
+    // console.log(chatOrder)
+
+    console.log(latestChats)
+
+    return {
+        type: SUCCESS_ALL_CHATS,
+        latestChats
     }
 }
