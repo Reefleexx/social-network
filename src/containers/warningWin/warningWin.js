@@ -2,20 +2,19 @@ import React, {} from 'react'
 import classes from './warningWin.module.scss'
 import Button from "../../components/Forms/Button/Button";
 import {useDispatch, useSelector} from "react-redux";
-import {fetchSignOut} from "../../redux/actions/authActions";
 import {closeWarningWin} from "../../redux/actions/appActions";
-import CloseOnEscape from "react-close-on-escape/src";
 
 const WarningWin = (props) => {
 
-    // eslint-disable-next-line react-hooks/rules-of-hooks
     const dispatch = useDispatch()
-    const text = useSelector(state => state.app.window)
 
-    const onSignOut = e => {
+    const text = useSelector(state => state.app.window)
+    const funcCallback = useSelector(state => state.app.funcCallback)
+    const onConfirm = e => {
         e.preventDefault()
+
+        funcCallback()
         dispatch(closeWarningWin())
-        dispatch(fetchSignOut())
     }
 
     const onCancel = e => {
@@ -32,7 +31,7 @@ const WarningWin = (props) => {
                 <form action={"submit"}>
                     <Button
                         type={'lightRed'}
-                        onClick={e => onSignOut(e)}
+                        onClick={e => onConfirm(e)}
                         text={'YES'}
                         typeOfAction={'submit'}
                     />

@@ -8,6 +8,7 @@ import {checkIfAuth} from "./redux/actions/authActions";
 import {database} from './bl/firebaseConfig'
 import {decodeKey} from "./bl/firebaseFunctions";
 import {showNewMessage} from "./redux/actions/appActions";
+import {updateChats} from "./redux/actions/chatActions";
 
 
 authentication.onAuthStateChanged(user => {
@@ -16,7 +17,7 @@ authentication.onAuthStateChanged(user => {
 
 let func
 
-function App() {
+function App(props) {
 
     const user = useSelector(state => state.auth)
     const dispatch = useDispatch()
@@ -53,17 +54,26 @@ function App() {
                         }
 
                         chats.child(element).limitToLast(1).on('value', messages => {
-                            const secret = messages.val()
+                            const messageItem = messages.val()
 
                             const message = {
                                 key: messages.key,
-                                timeStamp:  Object.keys(secret)[0],
-                                user:  secret[Object.keys(secret)[0]].sender
+                                timeStamp:  Object.keys(messageItem)[0],
+                                user:  messageItem[Object.keys(messageItem)[0]].sender,
+                                text: messageItem[Object.keys(messageItem)[0]].text
                             }
                             counter += 1
                             if (user.uid !== message.user) {
                                 if (counter > snap.numChildren()) {
-                                    dispatch(showNewMessage(message))
+                                    const path = props.location.pathname.split('/')
+                                    const lastPage = path[path.length - 1]
+                                    if (lastPage !== 'chat' && lastPage !== 'messages') {
+                                        dispatch(showNewMessage(message))
+                                    }
+
+                                    if (lastPage === 'messages') {
+                                        dispatch(updateChats(message))
+                                    }
                                 }
                             }
                         })

@@ -1,9 +1,21 @@
-import {takeLeading, put, call, all} from "redux-saga/effects";
-import {FETCH_ALL_CHATS, FETCH_MESSAGES, FETCH_NEW_MESSAGE, FETCH_USER_DATA_CHAT} from "../types";
+import {takeLeading, put, call, select} from "redux-saga/effects";
+import {
+    DELETE_CHAT,
+    FETCH_ALL_CHATS,
+    FETCH_MESSAGES,
+    FETCH_NEW_MESSAGE,
+    FETCH_USER_DATA_CHAT,
+    GET_USER_DATA
+} from "../types";
 import {showAlert} from "../actions/appActions";
 import {authentication, database} from "../../bl/firebaseConfig";
-import {fetchUserSuccess, successAllChats, successMessages} from "../actions/chatActions";
-import {decodeKey} from "../../bl/firebaseFunctions";
+import {
+    fetchUserSuccess,
+    removeChatFromDOM,
+    sortUpdatedChats,
+    successAllChats,
+    successMessages
+} from "../actions/chatActions";
 
 
 export default function* chatWatcher () {
@@ -11,6 +23,8 @@ export default function* chatWatcher () {
     yield takeLeading(FETCH_NEW_MESSAGE, action => messageWorker(action.text, action.timeStamp, action.uid))
     yield takeLeading(FETCH_MESSAGES, action => allMessagesWorker(action.uid))
     yield takeLeading(FETCH_ALL_CHATS, action => allChatsWorker(action.uid))
+    yield takeLeading(GET_USER_DATA, action => newMessageWorker(action.newMessage))
+    yield takeLeading(DELETE_CHAT, action => deleteChatWorker(action.user_uid))
 }
 
 function* allChatsWorker (uid) {
@@ -59,6 +73,31 @@ function* userDataWorker (uid) {
     }
 }
 
+function* newMessageWorker (message) {
+    try {
+        const data = yield call(() => getUserName_Photo(message.user_uid))
+
+        const messages = yield select(state => state.chat.latestChats)
+
+        yield put(sortUpdatedChats({
+            ...message,
+            user_name: data.user_name
+        }, messages))
+    } catch (e) {
+        yield showAlert(e.message)
+    }
+}
+
+function* deleteChatWorker (user_uid) {
+    try {
+        yield call(() => fetchDeleteChat(user_uid))
+
+        yield put(removeChatFromDOM(user_uid))
+    } catch (e) {
+        yield put(showAlert(e.message))
+    }
+}
+
 async function getUserName_Photo (uid) {
     const data = {
         user_name: ''
@@ -73,7 +112,8 @@ async function getUserName_Photo (uid) {
 
 async function fetchNewMessage (chatKey, data) {
     await database.ref(`chats/${chatKey}/${data.timeStamp.toString()}`).set({
-        text: data.text, sender: authentication.currentUser.uid
+        text: data.text, sender: authentication.currentUser.uid,
+        checked: false
     })
 }
 
@@ -109,6 +149,13 @@ async function getAllMessages (chatKey) {
             messages[messageSnap.key] = messageSnap.val()
         })
     })
+
+    const lastMessTime = Object.keys(messages)[Object.keys(messages).length - 1]
+    const lastMessage = messages[lastMessTime]
+
+    if (authentication.currentUser.uid !== lastMessage.sender) {
+        await database.ref(`chats/${chatKey}/${lastMessTime}/checked`).set(true)
+    }
 
     return messages
 }
@@ -151,6 +198,7 @@ async function getAllChats (uid) {
     //////////////// GET last elements \\\\\\\\\\\\\\\\\\\\
     Object.keys(userMessages).forEach((chatKey, i, chatArr) => {
         const chatMessages = userMessages[chatKey]
+        const lastEl = Object.keys(chatMessages)[Object.keys(chatMessages).length - 1]
 
         latestChats.push({
             chatKey: chatKey,
@@ -158,8 +206,9 @@ async function getAllChats (uid) {
             user_name: userNames[chatKey],
             message: {
                 time: Object.keys(chatMessages)[Object.keys(chatMessages).length - 1],
-                text: chatMessages[Object.keys(chatMessages)[Object.keys(chatMessages).length - 1]].text,
-                sender: chatMessages[Object.keys(chatMessages)[Object.keys(chatMessages).length - 1]].sender
+                text: chatMessages[lastEl].text,
+                sender: chatMessages[lastEl].sender,
+                checked: chatMessages[lastEl].checked
             }
         })
     })
@@ -167,7 +216,34 @@ async function getAllChats (uid) {
     ///////////////Order chats \\\\\\\\\\\\\\\\
     latestChats.sort(function(first, second) {return second.message.time - first.message.time})
 
-    console.log(latestChats)
-
     return latestChats
+}
+
+async function fetchDeleteChat (user_uid) {
+    const currentUid = authentication.currentUser.uid
+    let chatKey
+
+    ////////// Get chat key \\\\\\\\\\\\
+    await database.ref(`users/${currentUid}/chats/${user_uid}`).once('value', async snap => {
+        chatKey = await snap.val()
+    })
+
+    ////////// Remove listeners from firebase \\\\\\\\\\\\\
+    await database.ref(`users/${currentUid}/chats/${user_uid}`).off()
+    await database.ref(`users/${user_uid}/chats/${currentUid}`).off()
+
+    await database.ref(`chats/${chatKey}`).off()
+
+
+    /////////// Delete CHAT \\\\\\\\\\\\
+    await database.ref(`chats/${chatKey}`).remove()
+
+    /////////// Delete chat ref from YOUR data \\\\\\\\\\\\\\\\
+    await database.ref(`users/${currentUid}/chats/${user_uid}`).remove()
+
+    ////////// Delete chat ref from USER data \\\\\\\\\\\\\\
+    await database.ref(`users/${user_uid}/chats/${currentUid}`).remove()
+
+
+    return chatKey
 }

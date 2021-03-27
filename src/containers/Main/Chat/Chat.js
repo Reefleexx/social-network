@@ -4,7 +4,7 @@ import photo from "../../../img/wide.jpg";
 import {withRouter} from "react-router";
 import {useDispatch, useSelector} from "react-redux";
 import {fetchMessages, fetchNewMessage, fetchUpdateMessages, fetchUserData} from "../../../redux/actions/chatActions";
-import {database} from "../../../bl/firebaseConfig";
+import {database, authentication} from "../../../bl/firebaseConfig";
 
 
 const Chat = (props) => {
@@ -40,7 +40,7 @@ const Chat = (props) => {
     useEffect(async () => {
         if (chat_data.chatKey) {
             const chat = database.ref(`chats/${chat_data.chatKey}`)
-            await chat.on('value',  snapshot => {
+            await chat.on('value',  async snapshot => {
                 const message = {}
                 let key
 
@@ -53,6 +53,19 @@ const Chat = (props) => {
                 if (key) dispatch(fetchUpdateMessages(key, message))
 
                 if (messageEl.current) messageEl.current.scrollTop = messageEl.current.scrollHeight
+
+                ////////// Set checked \\\\\\\\
+                if (authentication.currentUser.uid !== message.sender) {
+                    let presence
+
+                    await database.ref(`users/${message.sender}/presence`).once('value', snap => {
+                        presence = snap.val()
+                    })
+
+                    if (presence === 'online') {
+                        await database.ref(`chats/${chat_data.chatKey}/${key}/checked`).set(true)
+                    }
+                }
             })
 
         } else {

@@ -2,22 +2,28 @@ import React from 'react'
 import classes from './Message.module.scss'
 import photo from '../../img/tall.jpg'
 import {withRouter} from "react-router";
+import {useDispatch} from "react-redux";
+import {deleteChat} from "../../redux/actions/chatActions";
+import {showWarningWin} from "../../redux/actions/appActions";
 
 const Message = (props) => {
 
+    const dispatch = useDispatch()
+
     const onOpenChat = (e) => {
         e.preventDefault()
-        props.history.push(`/${props.uid}/chat`)
+        if (e.target.className === classes.message_name || e.target.localName === 'img') {
+            props.history.push(`/search/${props.uid}`)
+        } else if (e.target.className === 'fas fa-times') {
+            dispatch(showWarningWin(
+                'This chat will be delete from both users',
+                () => dispatch(deleteChat(props.uid)))
+            )
+        } else {
+            props.history.push(`/${props.uid}/chat`)
+        }
     }
 
-    const onOpenUser = (e) => {
-        e.preventDefault()
-        props.history.push(`/search${props.uid}`)
-    }
-
-    const onDeleteChat = (e, uid) => {
-        e.preventDefault()
-    }
     return(
         <div className={classes.message_container} onClick={e => onOpenChat(e)}>
             <div className={classes.img_container}>
@@ -25,18 +31,20 @@ const Message = (props) => {
             </div>
 
             <div className={classes.message_text}>
-                <span className={classes.message_name} onClick={e => onOpenUser(e)}>{props.user_name}</span>
-                <span className={classes.message_last_text}>{props.text}</span>
+                <span className={classes.message_name}>{props.user_name}</span>
+                <span className={classes.message_last_text + ' ' + (!props.checked ? classes.unChecked : '') }>
+                    {props.text}
+                </span>
             </div>
 
             <div className={classes.message_data}>
-                <span className={classes.message_date}>Date</span>
-                <div className={classes.message_count}>
-                    {props.date}
-                </div>
+                <span className={classes.message_date}>{props.date}</span>
+                {/*<div className={classes.message_count}>*/}
+                {/*    {props.date}*/}
+                {/*</div>*/}
             </div>
 
-            <i className="fas fa-times" onClick={e => onDeleteChat(e)}/>
+            <i className="fas fa-times"/>
 
         </div>
     )

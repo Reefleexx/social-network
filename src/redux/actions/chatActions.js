@@ -1,11 +1,18 @@
 import {
     CLEAR_CHAT_STORE,
     FETCH_MESSAGES,
-    FETCH_NEW_MESSAGE, FETCH_UPDATE_MESSAGES,
+    FETCH_NEW_MESSAGE,
+    FETCH_UPDATE_MESSAGES,
     FETCH_USER_DATA_CHAT,
     SUCCESS_MESSAGES,
     SUCCESS_USER_DATA_CHAT,
-    FETCH_ALL_CHATS, SUCCESS_ALL_CHATS
+    FETCH_ALL_CHATS,
+    SUCCESS_ALL_CHATS,
+    NEW_MESSAGE_RECEIVED,
+    GET_USER_DATA,
+    DELETE_CHAT,
+    REMOVE_CHAT_FROM_DOM,
+    CHANGE_MESSAGES_TYPE
 } from "../types";
 
 export const fetchUserData = uid => {
@@ -62,14 +69,78 @@ export const fetchAllChats = (uid) => {
 }
 
 export const successAllChats = (latestChats) => {
-
-    // console.log(chats)
-    // console.log(chatOrder)
-
-    console.log(latestChats)
-
     return {
         type: SUCCESS_ALL_CHATS,
         latestChats
+    }
+}
+
+export const getUserData = (newMessage) => {
+    return {
+        type: GET_USER_DATA,
+        newMessage
+    }
+}
+
+export const updateChats = (message) => {
+    return dispatch => {
+        const newMessage = {
+            chatKey: message.key,
+            user_uid: message.user,
+            message: {
+                time: message.timeStamp,
+                text: message.text,
+                sender: message.user
+            }
+        }
+
+        dispatch(getUserData(newMessage))
+    }
+}
+
+export const sortUpdatedChats = (message, messages) => {
+    return dispatch => {
+        let chats = [...messages]
+
+        const wasChat = chats.reduce((result, el) => {
+            if (el.user_uid === message.user_uid) {
+                return true
+            }
+            return !result ? false : result
+        }, false)
+
+        if (wasChat) {
+            let index = null
+
+            messages.forEach((chat, i) => {
+                if (chat.chatKey === message.chatKey) {
+                    index = i
+                }
+            })
+
+            chats[index] = message
+
+            chats.sort(function(first, second) {return second.message.time - first.message.time})
+            dispatch(successAllChats(chats))
+        }
+
+        if (!wasChat) {
+            chats.shift(message)
+            dispatch(successAllChats(chats))
+        }
+    }
+}
+
+export const deleteChat = user_uid => {
+    return {
+        type: DELETE_CHAT,
+        user_uid
+    }
+}
+
+export const removeChatFromDOM = user_uid => {
+    return {
+        type: REMOVE_CHAT_FROM_DOM,
+        user_uid
     }
 }

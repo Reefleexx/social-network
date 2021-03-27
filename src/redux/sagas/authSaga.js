@@ -31,7 +31,6 @@ function* signOutWorker () {
 
 function* authWorker (action, type) {
     try {
-        console.log(action)
         const user = yield call(() => fetchSinging(action.email, action.password, type))
         yield authentication.updateCurrentUser(user.user)
         yield put(fetchAuth(user.user.uid))

@@ -32,10 +32,10 @@ export function hideAlert () {
     }
 }
 
-export function openWarningWin (text) {
+export function showWarningWin (text, funcCallback) {
     return {
         type: OPEN_WARNING_WIN,
-        windowText: text
+        text, funcCallback
     }
 }
 
@@ -56,7 +56,7 @@ export const showNewMessage = message => {
 
         messageTimer = setTimeout(() => {
             dispatch(hideNewMessage())
-        }, 200000)
+        }, 7000)
         dispatch(fetchNewMessage(message))
     }
 

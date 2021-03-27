@@ -6,7 +6,8 @@ import {
 const initialState = {
     error: null,
     window: null,
-    message: null
+    message: null,
+    funcCallback: null
 }
 
 export default function appReducer (state = initialState, action) {
@@ -25,7 +26,8 @@ export default function appReducer (state = initialState, action) {
         case OPEN_WARNING_WIN: {
             return {
                 ...state,
-                window: action.windowText
+                window: action.text,
+                funcCallback: action.funcCallback
             }
         }
         case CLOSE_WARNING_WIN: {

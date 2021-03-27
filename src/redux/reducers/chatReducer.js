@@ -1,6 +1,7 @@
 import {
+    CHANGE_MESSAGES_TYPE,
     CLEAR_CHAT_STORE,
-    FETCH_UPDATE_MESSAGES,
+    FETCH_UPDATE_MESSAGES, REMOVE_CHAT_FROM_DOM,
     SUCCESS_ALL_CHATS,
     SUCCESS_MESSAGES,
     SUCCESS_USER_DATA_CHAT
@@ -44,6 +45,16 @@ export default function chatReducer (state = initialState, action) {
             return {
                 ...state,
                 latestChats: action.latestChats
+            }
+        }
+        case REMOVE_CHAT_FROM_DOM: {
+            return {
+                ...state,
+                latestChats: state.latestChats.filter(chat => {
+                    if (chat.user_uid !== action.user_uid) {
+                        return chat
+                    }
+                })
             }
         }
         default: return state
