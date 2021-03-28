@@ -24,7 +24,7 @@ const MainPage = (props) => {
             <Route path={'/:uid/chat'} component={Chat} exact={true}/>
             <Route path={'/messages'} component={Messages} exact={true}/>
             <Route path={'/profile'} component={() => <Profile/>} exact={true}/>
-            <Route path={'/favorites'} component={Favorites} exact={true}/>
+            <Route path={'/album'} component={Album} exact={true}/>
             <Route path={'/'} component={Search} exact={true}/>
             <Redirect to={'/'} componenet={Search} />
         </Switch>

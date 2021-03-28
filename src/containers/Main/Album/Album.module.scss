@@ -1,0 +1,26 @@
+@import 'src/containers/Main/Profile/Profile.module.scss';
+
+.Album {
+  @include back;
+  width: 78%;
+  padding: 1.2rem 1rem;
+}
+
+.wrapper {
+  display: flex;
+  justify-content: center;
+  height: 100%;
+  align-items: center;
+}
+
+.main_headline {
+
+}
+
+.photo_container {
+
+}
+
+.photo {
+
+}

@@ -21,7 +21,7 @@ const NavBar = (props) => {
         navLinks = [
             {text: 'Messages', to: '/messages', exact: true},
             {text: 'Profile', to: '/profile', exact: true},
-            {text: 'Favorites', to: '/favorites', exact: true},
+            {text: 'Album', to: '/album', exact: true},
             {text: 'Search', to: '/search', exact: true}
         ]
     } else {
