@@ -52,3 +52,7 @@ export const NEW_MESSAGE_RECEIVED = 'NEW_MESSAGE_RECEIVED'
 export const GET_USER_DATA = 'GET_USER_DATA'
 export const DELETE_CHAT = 'DELETE_CHAT'
 export const REMOVE_CHAT_FROM_DOM = 'REMOVE_CHAT_FROM_DOM'
+
+///////////////// Photo actions \\\\\\\\\\\\\\\\\\\
+export const OPEN_PHOTO = 'OPEN_PHOTO'
+export const ADD_PHOTO = 'ADD_PHOTO'

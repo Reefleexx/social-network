@@ -48,6 +48,14 @@ const Layout = (props) => {
             }
 
             {
+                props.photo ?
+                    <Drawer onClose={photoClose}>
+                        <Photo id={props.photo}/>
+                    </Drawer>
+                    : null
+            }
+
+            {
                     <CSSTransition
                         in={shouldMessage}
                         timeout={200}
@@ -82,7 +90,8 @@ const mapStateToProps = state => {
         error: state.app.error,
         allType: state.user.allType,
         user_name: state.user.user_data.user_name,
-        message: state.app.message
+        message: state.app.message,
+        photo: state.app.photo
     }
 }
 

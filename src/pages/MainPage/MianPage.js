@@ -1,14 +1,15 @@
 import React from 'react'
 import classes from "./MainPage.module.scss";
+import {Redirect, Route, Switch} from "react-router";
+import {useSelector} from "react-redux";
 import Header from "../../containers/Header/Header";
 import Sidebar from "../../containers/Sidebar/Sidebar";
-import {Redirect, Route, Switch} from "react-router";
+import Album from "../../containers/Main/Album/Album";
 import Profile from "../../containers/Main/Profile/Profile";
 import Messages from "../../containers/Main/Messages/Messages";
 import Search from "../../containers/Main/Search/Search";
-import Favorites from "../../containers/Main/Favorites/Favorites";
-import {useSelector} from "react-redux";
 import Chat from "../../containers/Main/Chat/Chat";
+import Favorites from "../../containers/Main/Favorites/Favorites";
 
 
 const MainPage = (props) => {
