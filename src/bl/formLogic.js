@@ -192,4 +192,7 @@ export const isValidCheck = (value, type) => {
     return error
 }
 
-
+export const preventPropagation = (e) => {
+    e.preventDefault()
+    e.stopPropagation()
+}

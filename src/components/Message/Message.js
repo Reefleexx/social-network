@@ -4,7 +4,8 @@ import photo from '../../img/tall.jpg'
 import {withRouter} from "react-router";
 import {useDispatch} from "react-redux";
 import {deleteChat} from "../../redux/actions/chatActions";
-import {showWarningWin} from "../../redux/actions/appActions";
+import {openDrawer, showWarningWin} from "../../redux/actions/appActions";
+import WarningWin from "../../containers/warningWin/warningWin";
 
 const Message = (props) => {
 
@@ -15,10 +16,14 @@ const Message = (props) => {
         if (e.target.className === classes.message_name || e.target.localName === 'img') {
             props.history.push(`/search/${props.uid}`)
         } else if (e.target.className === 'fas fa-times') {
-            dispatch(showWarningWin(
-                'This chat will be delete from both users',
-                () => dispatch(deleteChat(props.uid)))
-            )
+            // dispatch(showWarningWin(
+            //     'This chat will be delete from both users',
+            //     () => dispatch(deleteChat(props.uid)))
+            // )
+            dispatch(openDrawer(() => <WarningWin
+                text={'This chat will be irrevocably delete from both users'}
+                callBack={() => dispatch(deleteChat(props.uid))}
+            />))
         } else {
             props.history.push(`/${props.uid}/chat`)
         }

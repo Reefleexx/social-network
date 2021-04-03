@@ -7,6 +7,8 @@ import IconProfile from "../../../components/UI/IconProfile/IconProfile";
 import {useDispatch, useSelector} from "react-redux";
 import {fetchUser, followUser, openAllType, unFollowUser} from "../../../redux/actions/userActions";
 import {withRouter} from "react-router";
+import {openDrawer} from "../../../redux/actions/appActions";
+import AllFollows from "../../allFollows/allFollows";
 
 
 const Profile = (props) => {
@@ -45,7 +47,7 @@ const Profile = (props) => {
 
     const onViewAll = (e, type) => {
         e.preventDefault()
-        dispatch(openAllType(type))
+        dispatch(openDrawer(() => <AllFollows type={type} user_name={user_data.name}/>))
     }
 
     const renderBarText = (left, type) => {

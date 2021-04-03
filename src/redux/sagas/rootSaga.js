@@ -4,6 +4,7 @@ import authWatcher from "./authSaga";
 import profileWatcher from "./userSaga";
 import searchWatcher from "./searchSaga";
 import chatWatcher from "./chatSaga";
+import {allPhotosWatcher} from "./allPhotosSaga";
 
 export default function* rootSaga () {
     yield all([
@@ -11,6 +12,7 @@ export default function* rootSaga () {
         authWatcher(),
         profileWatcher(),
         searchWatcher(),
-        chatWatcher()
+        chatWatcher(),
+        allPhotosWatcher()
     ])
 }

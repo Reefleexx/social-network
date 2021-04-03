@@ -1,6 +1,13 @@
 import {
     SHOW_ALERT,
-    HIDE_ALERT, OPEN_WARNING_WIN, CLOSE_WARNING_WIN, SHOW_NEW_MESSAGE, HIDE_NEW_MESSAGE, SUCCESS_NEW_MESSAGE, OPEN_PHOTO
+    HIDE_ALERT,
+    OPEN_WARNING_WIN,
+    CLOSE_WARNING_WIN,
+    HIDE_NEW_MESSAGE,
+    SUCCESS_NEW_MESSAGE,
+    OPEN_PHOTO,
+    OPEN_DRAWER,
+    CLOSE_DRAWER
 } from '../types'
 
 const initialState = {
@@ -8,7 +15,8 @@ const initialState = {
     window: null,
     message: null,
     funcCallback: null,
-    photo: null
+    photo: null,
+    component: null
 }
 
 export default function appReducer (state = initialState, action) {
@@ -22,6 +30,18 @@ export default function appReducer (state = initialState, action) {
         case HIDE_ALERT: {
             return {
                 ...state, error: null
+            }
+        }
+        case OPEN_DRAWER: {
+            return {
+                ...state,
+                component: action.component
+            }
+        }
+        case CLOSE_DRAWER: {
+            return {
+                ...state,
+                component: null
             }
         }
         case OPEN_WARNING_WIN: {

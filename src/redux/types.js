@@ -1,6 +1,8 @@
 ///////////// App actions \\\\\\\\\\\\\\
 export const SHOW_ALERT = 'SHOW_ALERT'
 export const HIDE_ALERT = 'HIDE_ALERT'
+export const OPEN_DRAWER = 'OPEN_DRAWER'
+export const CLOSE_DRAWER = 'CLOSE_DRAWER'
 
 ///////////// Auth actions \\\\\\\\\\\\\\
 export const FETCH_SIGN_UP = 'FETCH_AUTH_CREATE'
@@ -56,3 +58,6 @@ export const REMOVE_CHAT_FROM_DOM = 'REMOVE_CHAT_FROM_DOM'
 ///////////////// Photo actions \\\\\\\\\\\\\\\\\\\
 export const OPEN_PHOTO = 'OPEN_PHOTO'
 export const ADD_PHOTO = 'ADD_PHOTO'
+export const SUCCESS_ALL_PHOTOS = 'SUCCESS_ALL_PHOTOS'
+export const FETCH_LIKE_PHOTO = 'FETCH_LIKE_PHOTO'
+export const SUCCESS_LIKE_PHOTO = 'SUCCESS_LIKE_PHOTO'

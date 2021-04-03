@@ -1,9 +1,11 @@
 import React from 'react'
 import classes from './Auth.module.scss'
 import {useDispatch, useSelector} from "react-redux";
-import {showWarningWin} from "../../../redux/actions/appActions";
+import {openDrawer, showWarningWin} from "../../../redux/actions/appActions";
 import {withRouter} from "react-router";
 import {fetchSignOut} from "../../../redux/actions/authActions";
+import AllFollows from "../../../containers/allFollows/allFollows";
+import WarningWin from "../../../containers/warningWin/warningWin";
 
 const Auth = (props) => {
 
@@ -13,7 +15,11 @@ const Auth = (props) => {
     const onClick = e => {
         e.preventDefault()
         if (user.uid) {
-            dispatch(showWarningWin('Are you sure you want to sign out ?', () => dispatch(fetchSignOut())))
+            // dispatch(showWarningWin('Are you sure you want to sign out ?', () => dispatch(fetchSignOut())))
+            dispatch(openDrawer(() => <WarningWin
+                text={'Are you sure you want to sign out ?'}
+                callBack={() => dispatch(fetchSignOut() )}
+            />))
         } else {
             props.history.push('/authPage/auth')
         }

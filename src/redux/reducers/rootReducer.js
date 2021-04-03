@@ -4,7 +4,7 @@ import authReducer from "./authReducer";
 import userReducer from "./userReducer";
 import searchReducer from "./searchReducer";
 import chatReducer from "./chatReducer";
-import photoReducer from "./photoReducer";
+import allPhotosReducer from "./allPhotosReducer";
 
 export default combineReducers({
     app: appReducer,
@@ -12,5 +12,5 @@ export default combineReducers({
     user: userReducer,
     search: searchReducer,
     chat: chatReducer,
-    photo: photoReducer
+    allPhotos: allPhotosReducer
 })

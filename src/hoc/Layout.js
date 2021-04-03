@@ -6,21 +6,12 @@ import Alert from "../components/UI/Alert/Alert";
 import AllFollows from "../containers/allFollows/allFollows";
 import Drawer from "../containers/Drawer/Drawer";
 import {closeAll} from "../redux/actions/userActions";
-import {closeWarningWin} from "../redux/actions/appActions";
+import {closeDrawer, closeWarningWin} from "../redux/actions/appActions";
 import NewMessage from "../components/UI/NewMessage/NewMessage";
 import {CSSTransition} from "react-transition-group";
 import messageClasses from '../components/UI/NewMessage/NewMessage.module.scss'
 
 const Layout = (props) => {
-    const dispatch = useDispatch()
-
-    const allClose = () => {
-        dispatch(closeAll())
-    }
-
-    const warningClose = () => {
-        dispatch(closeWarningWin())
-    }
 
     const shouldMessage = props.message && Object.entries(props.message).length !== 0
 
@@ -28,29 +19,9 @@ const Layout = (props) => {
         <div className={classes.Layout}>
 
             {
-                props.warningWin ?
-                    <Drawer onClose={warningClose}>
-                        <WarningWin />
-                    </Drawer>
-                    : null
-            }
-
-            {
-                props.error ? <Alert/> : null
-            }
-
-            {
-                props.allType ?
-                    <Drawer onClose={allClose}>
-                        <AllFollows type={props.allType} user_name={props.user_name}/>
-                    </Drawer>
-                    : null
-            }
-
-            {
-                props.photo ?
-                    <Drawer onClose={photoClose}>
-                        <Photo id={props.photo}/>
+                props.component ?
+                    <Drawer onClose={props.closeDrawer}>
+                        {props.component()}
                     </Drawer>
                     : null
             }
@@ -76,7 +47,7 @@ const Layout = (props) => {
                     </CSSTransition>
             }
 
-            <main className={props.warningWin || props.allType ? classes.main_opacity : null}>
+            <main className={props.component ? classes.main_opacity : null}>
                 {props.children}
             </main>
         </div>
@@ -85,14 +56,15 @@ const Layout = (props) => {
 
 const mapStateToProps = state => {
     return {
-        warningWin: state.app.window,
-        allOpen: state.user.allType,
-        error: state.app.error,
-        allType: state.user.allType,
-        user_name: state.user.user_data.user_name,
         message: state.app.message,
-        photo: state.app.photo
+        component: state.app.component,
     }
 }
 
-export default connect(mapStateToProps)(Layout)
+const dispatchToProps = dispatch => {
+    return {
+        closeDrawer: () => dispatch(closeDrawer())
+    }
+}
+
+export default connect(mapStateToProps, dispatchToProps)(Layout)

@@ -1,6 +1,7 @@
 import {
+    CLOSE_DRAWER,
     CLOSE_WARNING_WIN,
-    HIDE_ALERT, HIDE_NEW_MESSAGE,
+    HIDE_ALERT, HIDE_NEW_MESSAGE, OPEN_DRAWER,
     OPEN_WARNING_WIN,
     SHOW_ALERT, SHOW_NEW_MESSAGE, SUCCESS_NEW_MESSAGE
 } from "../types";
@@ -82,5 +83,18 @@ export const hideNewMessage = () => {
     clearTimeout(messageTimer)
     return {
         type: HIDE_NEW_MESSAGE
+    }
+}
+
+export const openDrawer = (component) => {
+    return {
+        type: OPEN_DRAWER,
+        component
+    }
+}
+
+export const closeDrawer = () => {
+    return {
+        type: CLOSE_DRAWER
     }
 }

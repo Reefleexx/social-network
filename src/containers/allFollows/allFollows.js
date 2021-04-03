@@ -5,6 +5,8 @@ import photo from "../../img/wide.jpg";
 import {useDispatch, useSelector} from "react-redux";
 import {closeAll, fetchUserFollowers, fetchUserFollowing} from "../../redux/actions/userActions";
 import {withRouter} from "react-router";
+import {closeDrawer} from "../../redux/actions/appActions";
+import {preventPropagation} from "../../bl/formLogic";
 
 const AllFollows = (props) => {
 
@@ -13,7 +15,7 @@ const AllFollows = (props) => {
     const uid = useSelector(state => state.auth.uid)
 
     const path = props.location.pathname.split('/')[2]
-    console.log(path)
+
     useEffect(() => {
         if (props.type === 'followers') {
             dispatch(fetchUserFollowers(path ? path : uid))
@@ -24,12 +26,12 @@ const AllFollows = (props) => {
 
     const onClose = e => {
         e.preventDefault()
-        dispatch(closeAll())
+        dispatch(closeDrawer())
     }
 
     const renderUsers = () => {
         return (
-            <div className={classes.user_items}>
+            <div className={classes.user_items} onClick={e => preventPropagation(e)}>
                 <i
                     className={'fa fa-times'}
                     id={classes.fa_times}

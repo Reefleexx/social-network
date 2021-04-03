@@ -1,45 +1,69 @@
-import React, {useRef} from 'react'
+import React, {useRef, useEffect} from 'react'
 import classes from './Album.module.scss'
 import photo from '../../../img/tall.jpg'
 import photo1 from '../../../img/wide.jpg'
-import {useDispatch} from "react-redux";
-import {addPhoto} from "../../../redux/actions/photoActions";
+import {useDispatch, useSelector} from "react-redux";
+import {fetchLikePhoto, loadAllPhotos, sortAllPhotos} from "../../../redux/actions/allPhotosActions";
+import {openDrawer} from "../../../redux/actions/appActions";
+import PreviewPhoto from "../../PreviewPhoto/PreviewPhoto";
+import {authentication, database} from "../../../bl/firebaseConfig";
+import {withRouter} from "react-router";
 
 
 const Album = (props) => {
 
+    const allPhotos = useSelector(state => state.allPhotos.allPhotos)
     const dispatch = useDispatch()
+
     const inputRef = useRef()
 
-    const onLikeHandler = e => {
+    useEffect(async () => {
+        await database.ref(`users/${user_uid}/photos`).on('value', snap => {
+            const allPhotos = snap.val()
+
+            dispatch(sortAllPhotos(allPhotos))
+        })
+
+        return async function () {
+            await database.ref(`users/${user_uid}/photos`).off()
+        }
+    }, [])
+
+    const user_uid = props.match.uid ? props.match.uid : authentication.currentUser.uid
+
+    const onLikeHandler = (e, photoKey) => {
         e.preventDefault()
         e.stopPropagation()
 
-        console.log('Like')
+        dispatch(fetchLikePhoto(photoKey, user_uid, isLiked))
     }
 
     const onCommentHandler = e => {
         e.preventDefault()
         e.stopPropagation()
 
-        console.log('Comment')
     }
 
     const onOpenImg = e => {
         e.preventDefault()
-        console.log('Open')
     }
 
     const onAddImg = e => {
         e.preventDefault()
         inputRef.current.click()
-        // dispatch(addPhoto(e.target.files[0]))
     }
 
     const previewImgHandler = e => {
         e.preventDefault()
-        console.log(e.target.files[0])
-        // dispatch(addPhoto(e.target.files[0]))
+        const photo = inputRef.current.files[0]
+
+        dispatch(openDrawer(() => <PreviewPhoto
+            photo={photo}
+            text={'Add your photo'}
+            inputRef={inputRef}
+        />))
+
+        inputRef.current.value = ''
     }
 
     return(
@@ -68,55 +92,46 @@ const Album = (props) => {
 
                 <div className={classes.photos_container}>
 
-                    <div className={classes.img_container} onClick={e => onOpenImg(e)}>
-                        <div className={classes.task_bar}>
-                            <i
-                                className={`far fa-heart`}
-                                onClick={e => onLikeHandler(e)}
-                            />
-                            <i
-                                className={`far fa-comment-dots`}
-                                onClick={e => onCommentHandler(e)}
-                            />
-                        </div>
-                        <img src={photo} alt=""/>
-                    </div>
+                    {
+                        allPhotos && Object.keys(allPhotos).length > 0 ?
+                            Object.keys(allPhotos).map(photoKey => {
 
+                                let isLiked = false
 
-                    <div className={classes.img_container}>
-                        <img src={photo} alt=""/>
-                    </div>
-                    <div className={classes.img_container}>
-                        <img src={photo} alt=""/>
-                    </div>
+                                if (allPhotos[photoKey].likes) {
+                                    console.log(allPhotos[photoKey])
+                                    if (allPhotos[photoKey].likes.find(el => el === authentication.currentUser.uid)){
+                                        isLiked = true
+                                    }
+                                }
 
-                    <div className={classes.img_container}>
-                        <img src={photo1} alt=""/>
-                    </div>
-                    <div className={classes.img_container}>
-                        <img src={photo} alt=""/>
-                    </div>
-                    <div className={classes.img_container}>
-                        <img src={photo} alt=""/>
-                    </div>
+                                return (
+                                    <div
+                                        className={classes.img_container}
+                                        onClick={e => onOpenImg(e, allPhotos[photoKey])}
+                                        key={photoKey}
+                                    >
+                                        <div className={classes.task_bar}>
+                                            <i
+                                                className={`${isLiked ? 'fas': 'far'} fa-heart`}
+                                                onClick={e => onLikeHandler(e, photoKey, isLiked)}
+                                            />
+                                            <i
+                                                className={`far fa-comment-dots`}
+                                                onClick={e => onCommentHandler(e)}
+                                            />
+                                        </div>
+                                        <img src={allPhotos[photoKey].src} alt=""/>
+                                    </div>
 
-                    <div className={classes.img_container}>
-                        <img src={photo} alt=""/>
-                    </div>
-                    <div className={classes.img_container}>
-                        <img src={photo1} alt=""/>
-                    </div>
-                    <div className={classes.img_container}>
-                        <img src={photo1} alt=""/>
-                    </div>
+                                )
+                            }) : <h3>No photos yet</h3>
+                    }
 
-                    <div className={classes.img_container}>
-                        <img src={photo1} alt=""/>
-                    </div>
                 </div>
             </div>
         </div>
     )
 }
 
-export default Album
+export default withRouter(Album)

@@ -2,31 +2,31 @@ import React, {} from 'react'
 import classes from './warningWin.module.scss'
 import Button from "../../components/Forms/Button/Button";
 import {useDispatch, useSelector} from "react-redux";
-import {closeWarningWin} from "../../redux/actions/appActions";
+import {closeDrawer} from "../../redux/actions/appActions";
+import {preventPropagation} from "../../bl/formLogic";
 
 const WarningWin = (props) => {
 
     const dispatch = useDispatch()
 
-    const text = useSelector(state => state.app.window)
-    const funcCallback = useSelector(state => state.app.funcCallback)
     const onConfirm = e => {
+
         e.preventDefault()
 
-        funcCallback()
-        dispatch(closeWarningWin())
+        props.callBack()
+        dispatch(closeDrawer())
     }
 
     const onCancel = e => {
         e.preventDefault()
-        dispatch(closeWarningWin())
+        dispatch(closeDrawer())
     }
 
     return(
-        <div className={classes.sign_back}>
+        <div className={classes.sign_back} onClick={e => preventPropagation(e)}>
             <div className={classes.signWrapper}>
             <span>
-                {text}
+                {props.text}
             </span>
                 <form action={"submit"}>
                     <Button
