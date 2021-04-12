@@ -6,7 +6,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {closeAll, fetchUserFollowers, fetchUserFollowing} from "../../redux/actions/userActions";
 import {withRouter} from "react-router";
 import {closeDrawer} from "../../redux/actions/appActions";
-import {preventPropagation} from "../../bl/formLogic";
+import {preventPropagation} from "../../bl/functions";
 
 const AllFollows = (props) => {
 

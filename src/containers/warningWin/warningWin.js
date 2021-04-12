@@ -3,7 +3,7 @@ import classes from './warningWin.module.scss'
 import Button from "../../components/Forms/Button/Button";
 import {useDispatch, useSelector} from "react-redux";
 import {closeDrawer} from "../../redux/actions/appActions";
-import {preventPropagation} from "../../bl/formLogic";
+import {preventPropagation} from "../../bl/functions";
 
 const WarningWin = (props) => {
 

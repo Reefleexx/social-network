@@ -176,7 +176,7 @@ const Chat = (props) => {
                             cols="30"
                             rows={'auto'}
                             className={classes.foot_text}
-                            placeholder={'Write something...'}
+                              placeholder={'Write something...'}
                         />
                         <i id={classes.send_icon} className="fas fa-paper-plane" onClick={e => onSend(e)}/>
                     </form>

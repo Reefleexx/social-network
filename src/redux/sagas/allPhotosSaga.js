@@ -56,6 +56,7 @@ async function fetchAddPhoto (photo, user_uid) {
 
     await database.ref(`users/${user_uid}/photos/${photoKey}`).set({
         src: url,
+        user_uid: authentication.currentUser.uid,
         likes: [],
         comments: []
     })
@@ -70,13 +71,15 @@ async function fetchLikePhoto (photoKey, user_uid) {
 async function fetchUnlikePhoto (photoKey, user_uid, currentUid) {
     let key
 
-    const photoRef = database.ref(`users/${user_uid}/photos/${photoKey}`)
+    const photoRef = database.ref(`users/${user_uid}/photos/${photoKey}/likes`)
 
-    photoRef.once('value', snap => {
+    await photoRef.once('value', snap => {
         snap.forEach(snapEl => {
             if (snapEl.val() === currentUid) {
                 key = snapEl.key
             }
         })
     })
+
+    await photoRef.child(key).remove()
 }

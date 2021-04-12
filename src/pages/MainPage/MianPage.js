@@ -9,7 +9,6 @@ import Profile from "../../containers/Main/Profile/Profile";
 import Messages from "../../containers/Main/Messages/Messages";
 import Search from "../../containers/Main/Search/Search";
 import Chat from "../../containers/Main/Chat/Chat";
-import Favorites from "../../containers/Main/Favorites/Favorites";
 
 
 const MainPage = (props) => {
@@ -32,7 +31,6 @@ const MainPage = (props) => {
     } else {
         routes = <Switch>
             <Route path={'/search'} component={Search} exact={true}/>
-            {/*<Route path={'/search/:uid'} component={Profile} exact={true}/>*/}
             <Route path={'/'} component={Search} exact={true}/>
             <Redirect to={'/'} componenet={Search} />
         </Switch>

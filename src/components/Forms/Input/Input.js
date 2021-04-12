@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react'
 import classes from './Input.module.scss'
-import {createForm, isValidCheck} from "../../../bl/formLogic";
+import {createForm, isValidCheck} from "../../../bl/functions";
 
 const Input = (props) => {
 

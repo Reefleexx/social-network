@@ -55,9 +55,14 @@ export const GET_USER_DATA = 'GET_USER_DATA'
 export const DELETE_CHAT = 'DELETE_CHAT'
 export const REMOVE_CHAT_FROM_DOM = 'REMOVE_CHAT_FROM_DOM'
 
-///////////////// Photo actions \\\\\\\\\\\\\\\\\\\
+///////////////// ALL Photos actions \\\\\\\\\\\\\\\\\\\
 export const OPEN_PHOTO = 'OPEN_PHOTO'
 export const ADD_PHOTO = 'ADD_PHOTO'
 export const SUCCESS_ALL_PHOTOS = 'SUCCESS_ALL_PHOTOS'
 export const FETCH_LIKE_PHOTO = 'FETCH_LIKE_PHOTO'
 export const SUCCESS_LIKE_PHOTO = 'SUCCESS_LIKE_PHOTO'
+
+//////////////// Photo actions \\\\\\\\\\\\\\\\\\\
+export const FETCH_ADD_COMMENT = 'FETCH_ADD_COMMENT'
+export const FETCH_ALL_COMMENTS = 'FETCH_ALL_COMMENTS'
+export const SUCCESS_ALL_COMMENTS = 'SUCCESS_ALL_COMMENTS'

@@ -1,6 +1,6 @@
 import React, {useRef} from 'react'
 import classes from './PreviewPhoto.module.scss'
-import {preventPropagation} from "../../bl/formLogic";
+import {preventPropagation} from "../../bl/functions";
 import {useDispatch} from "react-redux";
 import {closeDrawer} from "../../redux/actions/appActions";
 import {addPhoto} from "../../redux/actions/allPhotosActions";

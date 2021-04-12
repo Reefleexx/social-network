@@ -16,7 +16,7 @@ const Layout = (props) => {
     const shouldMessage = props.message && Object.entries(props.message).length !== 0
 
     return(
-        <div className={classes.Layout}>
+        <>
 
             {
                 props.component ?
@@ -50,7 +50,7 @@ const Layout = (props) => {
             <main className={props.component ? classes.main_opacity : null}>
                 {props.children}
             </main>
-        </div>
+        </>
     )
 }
 

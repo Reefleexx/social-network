@@ -8,6 +8,7 @@ import {openDrawer} from "../../../redux/actions/appActions";
 import PreviewPhoto from "../../PreviewPhoto/PreviewPhoto";
 import {authentication, database} from "../../../bl/firebaseConfig";
 import {withRouter} from "react-router";
+import Photo from "../../../components/Photo/Photo";
 
 
 const Album = (props) => {
@@ -21,7 +22,9 @@ const Album = (props) => {
         await database.ref(`users/${user_uid}/photos`).on('value', snap => {
             const allPhotos = snap.val()
 
-            dispatch(sortAllPhotos(allPhotos))
+            if (allPhotos) {
+                dispatch(sortAllPhotos(allPhotos))
+            }
         })
 
         return async function () {
@@ -31,7 +34,7 @@ const Album = (props) => {
 
     const user_uid = props.match.uid ? props.match.uid : authentication.currentUser.uid
 
-    const onLikeHandler = (e, photoKey) => {
+    const onLikeHandler = (e, photoKey, isLiked, user_uid) => {
         e.preventDefault()
         e.stopPropagation()
 
@@ -41,11 +44,12 @@ const Album = (props) => {
     const onCommentHandler = e => {
         e.preventDefault()
         e.stopPropagation()
-
     }
 
-    const onOpenImg = e => {
+    const onOpenImg = (e, photoKey, user_uid, src) => {
         e.preventDefault()
+
+        dispatch(openDrawer(() => <Photo photoKey={photoKey} user_uid={user_uid} src={src}/>))
     }
 
     const onAddImg = e => {
@@ -108,13 +112,15 @@ const Album = (props) => {
                                 return (
                                     <div
                                         className={classes.img_container}
-                                        onClick={e => onOpenImg(e, allPhotos[photoKey])}
+                                        onClick={e => onOpenImg(e, photoKey, allPhotos[photoKey].user_uid, allPhotos[photoKey].src)}
                                         key={photoKey}
                                     >
                                         <div className={classes.task_bar}>
                                             <i
                                                 className={`${isLiked ? 'fas': 'far'} fa-heart`}
-                                                onClick={e => onLikeHandler(e, photoKey, isLiked)}
+                                                onClick={e => onLikeHandler(
+                                                    e, photoKey, isLiked, allPhotos[photoKey].user_uid
+                                                )}
                                             />
                                             <i
                                                 className={`far fa-comment-dots`}
