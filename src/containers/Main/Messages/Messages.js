@@ -91,6 +91,7 @@ const Messages = (props) => {
                                     key={el.user_uid}
                                     uid={el.user_uid}
                                     user_name={el.user_name}
+                                    sender_uid={el.message.sender}
                                     text={el.message.text}
                                     date={`${day} ${monthNames[month]} ${year}`}
                                     checked={el.message.checked}
