@@ -6,7 +6,7 @@ import { CountryDropdown, RegionDropdown } from 'react-country-region-selector';
 const Country = (props) => {
 
     return(
-        <div className={classes.wrapper}>
+        <div className={!props.edit ? classes.reg_wrapper : classes.wrapper}>
             <div>
                 <CountryDropdown
                     value={props.values.country}

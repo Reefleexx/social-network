@@ -26,7 +26,7 @@
   display: flex;
   flex-direction: column;
   border-radius: 3px;
-  height: 20rem;
+  height: 21rem;
   margin-right: 2.4rem;
   width: 14rem;
   background: $backColor;
@@ -36,15 +36,10 @@
     margin-left: 1rem;
     width: 60%;
   }
-  i {
-    @include favIcon;
-    margin: 0 1rem 4.6rem 0;
-    font-size: 1.6rem;
-  }
 }
 
 .img_container {
-  height: 65%;
+  height: 69%;
   width: 100%;
   img {
     height: 100%;
@@ -57,5 +52,5 @@
 .name {
   font-weight: 500;
   font-size: 1.1rem;
-  margin: 1rem;
+  margin: .7rem 1rem;
 }

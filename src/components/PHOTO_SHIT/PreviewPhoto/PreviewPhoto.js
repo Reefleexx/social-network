@@ -1,9 +1,9 @@
 import React, {useRef} from 'react'
 import classes from './PreviewPhoto.module.scss'
-import {preventPropagation} from "../../bl/functions";
+import {preventPropagation} from "../../../bl/functions";
 import {useDispatch} from "react-redux";
-import {closeDrawer} from "../../redux/actions/appActions";
-import {addPhoto} from "../../redux/actions/allPhotosActions";
+import {closeDrawer} from "../../../redux/actions/appActions";
+import {addPhoto} from "../../../redux/actions/allPhotosActions";
 
 const PreviewPhoto = (props) => {
 
@@ -26,7 +26,7 @@ const PreviewPhoto = (props) => {
         dispatch(closeDrawer())
 
         ////// Add photo \\\\\\
-        dispatch(addPhoto(props.photo))
+        props.onConfirm(props.photo)
     }
 
     return(

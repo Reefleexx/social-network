@@ -8,9 +8,9 @@ const Messages = (props) => {
 
     const dispatch = useDispatch()
     const latestChats = useSelector(state => state.chat.latestChats)
+    const defaultPhoto = useSelector(state => state.chat.defaultPhotoSrc)
     const currentUid = useSelector(state => state.auth.uid)
     const [type, changeType] = useState('All chats')
-    // const chatKeys = Object.keys(chats).reverse()
 
     useEffect(() => {
         dispatch(fetchAllChats(currentUid))
@@ -60,19 +60,31 @@ const Messages = (props) => {
                         const year = new Date(timeStamp).getFullYear()
 
                         if (type === 'All chats') {
+
+                            const photo = el.message.sender_photo ?
+                                el.message.sender_photo :
+                                defaultPhoto
+                            console.log(el)
                             return (
                                 <Message
                                     key={el.user_uid}
                                     uid={el.user_uid}
+                                    sender_uid={el.message.sender}
                                     user_name={el.user_name}
                                     text={el.message.text}
                                     date={`${day} ${monthNames[month]} ${year}`}
                                     checked={el.message.checked}
+                                    photo={photo}
                                 />
                             )
                         }
 
                         if (type === 'Unread') {
+
+                            const photo = el.message.sender_photo ?
+                                el.message.sender_photo :
+                                defaultPhoto
+                            console.log(el)
                             return (
                                 !el.message.checked &&
                                 <Message
@@ -82,6 +94,7 @@ const Messages = (props) => {
                                     text={el.message.text}
                                     date={`${day} ${monthNames[month]} ${year}`}
                                     checked={el.message.checked}
+                                    photo={photo}
                                 />
                             )
                         }

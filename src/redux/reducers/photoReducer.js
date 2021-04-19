@@ -1,4 +1,4 @@
-import {SUCCESS_ALL_COMMENTS} from "../types";
+import {CLEAR_PHOTO_STORE, SUCCESS_ALL_COMMENTS} from "../types";
 
 const initialState = {
     photoKey: '',
@@ -15,6 +15,11 @@ export default function photoReducer (state = initialState, action) {
             return {
                 ...state,
                 comments: action.allComments
+            }
+        }
+        case CLEAR_PHOTO_STORE: {
+            return {
+                initialState
             }
         }
         default: return state

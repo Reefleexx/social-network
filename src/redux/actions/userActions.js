@@ -1,8 +1,9 @@
 import {
-    CLEAR_USER_DATA, CLOSE_ALL, FETCH_PRESENCE,
-    FETCH_USER_DATA, FETCH_USER_FOLLOWERS, FETCH_USER_FOLLOWING,
-    FOLLOW_USER, FOLLOWERS_SUCCESS, FOLLOWING_SUCCESS, OPEN_ALL,
-    SUCCESS_USER_DATA,
+    CHANGE_DEFPHOTO_URL,
+    CLEAR_USER_DATA, CLOSE_ALL, FETCH_PRESENCE, FETCH_UPDATE_USER_DATA,
+    FETCH_USER_DATA, FETCH_USER_FOLLOWERS, FETCH_USER_FOLLOWING, FETCH_USER_NAME,
+    FOLLOW_USER, FOLLOWERS_SUCCESS, FOLLOWING_SUCCESS, OPEN_ALL, SUCCESS_UPDATE_USER_DATA,
+    SUCCESS_USER_DATA, SUCCESS_USER_NAME,
     UNFOLLOW_USER
 } from "../types";
 
@@ -50,16 +51,10 @@ export const successUser = data => {
     }
 }
 
-export const followSuccess = (names, type) => {
+export const followSuccess = (names_photos, type) => {
     return dispatch => {
-        const follows = {}
-
-        Object.keys(names).forEach((key, i) => {
-            follows[key] = names[key]
-        })
-
-        if (type === 'followers') dispatch(putFollowers(follows))
-        if (type === 'following') dispatch(putFollowing(follows))
+        if (type === 'followers') dispatch(putFollowers(names_photos))
+        if (type === 'following') dispatch(putFollowing(names_photos))
     }
 }
 
@@ -114,5 +109,33 @@ export const presenceAction = presence => {
     return {
         type: FETCH_PRESENCE,
         presence
+    }
+}
+
+export const changeStoreDefPhoto = photoUrl => {
+    return {
+        type: CHANGE_DEFPHOTO_URL,
+        photoUrl
+    }
+}
+
+export const fetchUpdateUserData = data => {
+    return {
+        type: FETCH_UPDATE_USER_DATA,
+        data
+    }
+}
+
+export const changeUserName = name => {
+    return {
+        type: FETCH_USER_NAME,
+        name
+    }
+}
+
+export const updateUserNameSuccess = name => {
+    return {
+        type: SUCCESS_USER_NAME,
+        name
     }
 }

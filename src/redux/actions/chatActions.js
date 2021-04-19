@@ -8,11 +8,9 @@ import {
     SUCCESS_USER_DATA_CHAT,
     FETCH_ALL_CHATS,
     SUCCESS_ALL_CHATS,
-    NEW_MESSAGE_RECEIVED,
     GET_USER_DATA,
     DELETE_CHAT,
     REMOVE_CHAT_FROM_DOM,
-    CHANGE_MESSAGES_TYPE
 } from "../types";
 
 export const fetchUserData = uid => {
@@ -25,7 +23,8 @@ export const fetchUserData = uid => {
 export const fetchUserSuccess = data => {
     return {
         type: SUCCESS_USER_DATA_CHAT,
-        user_name: data.user_name
+        user_name: data.user_name,
+        defaultPhotoSrc: data.defaultPhotoSrc
     }
 }
 

@@ -81,7 +81,8 @@ function* newMessageWorker (message) {
 
         yield put(sortUpdatedChats({
             ...message,
-            user_name: data.user_name
+            user_name: data.user_name,
+            defaultPhotoSrc: data.defaultPhotoSrc
         }, messages))
     } catch (e) {
         yield showAlert(e.message)
@@ -105,6 +106,9 @@ async function getUserName_Photo (uid) {
 
     await database.ref(`users/${uid}/user_data`).once('value', snapshot => {
         data.user_name = snapshot.val().user_name
+        if (snapshot.val().defaultPhotoSrc) {
+            data.defaultPhotoSrc = snapshot.val().defaultPhotoSrc
+        }
     })
 
     return data
@@ -165,6 +169,7 @@ async function getAllChats (uid) {
     const userUids = {}
     const userNames = {}
     const userMessages = {}
+    const userPhotos = {}
 
     const latestChats = []
 
@@ -183,6 +188,7 @@ async function getAllChats (uid) {
 
         await database.ref(`users/${userUid}/user_data`).once('value', userSnap => {
             userNames[chatKey] = userSnap.val().user_name
+            userPhotos[chatKey] = userSnap.val().defaultPhotoSrc
         })
     }
 
@@ -208,6 +214,7 @@ async function getAllChats (uid) {
                 time: Object.keys(chatMessages)[Object.keys(chatMessages).length - 1],
                 text: chatMessages[lastEl].text,
                 sender: chatMessages[lastEl].sender,
+                sender_photo: userPhotos[chatKey],
                 checked: chatMessages[lastEl].checked
             }
         })

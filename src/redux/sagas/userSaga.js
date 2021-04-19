@@ -1,15 +1,15 @@
 import {takeLeading, put, call, select} from "redux-saga/effects";
 import {
-    FETCH_PRESENCE,
+    FETCH_PRESENCE, FETCH_UPDATE_USER_DATA,
     FETCH_USER_DATA,
     FETCH_USER_FOLLOWERS,
-    FETCH_USER_FOLLOWING,
+    FETCH_USER_FOLLOWING, FETCH_USER_NAME,
     FOLLOW_USER,
     UNFOLLOW_USER
 } from "../types";
 import {showAlert} from "../actions/appActions";
-import {database} from "../../bl/firebaseConfig";
-import {followSuccess, presenceAction, successUser} from "../actions/userActions";
+import {authentication, database} from "../../bl/firebaseConfig";
+import {followSuccess, presenceAction, successUser, updateUserNameSuccess} from "../actions/userActions";
 
 export default function* profileWatcher () {
     yield takeLeading(FETCH_USER_DATA, (action) => userDataWorker(action.uid))
@@ -18,8 +18,26 @@ export default function* profileWatcher () {
     yield takeLeading(FETCH_USER_FOLLOWING, (action) => userFollowingWorker(action.uid, 'following'))
     yield takeLeading(FOLLOW_USER, (action) => followWorker(action.uid, true))
     yield takeLeading(UNFOLLOW_USER, (action) => followWorker(action.uid, false))
+    yield takeLeading(FETCH_UPDATE_USER_DATA, action => updateUserDataWorker(action.data))
+    yield takeLeading(FETCH_USER_NAME, action => updateUserNameWorker(action.name))
 }
 
+function* updateUserNameWorker (name) {
+    try {
+        yield call(() => updateUserName(name))
+        yield put(updateUserNameSuccess(name))
+    } catch (e) {
+        yield put(showAlert(e.message))
+    }
+}
+
+function* updateUserDataWorker (data) {
+    try {
+        yield call(() => updateUserData(data))
+    } catch (e) {
+        yield put(showAlert(e.message))
+    }
+}
 
 function* userPresenceWorker (uid) {
     const presence = yield call(() => fetchPresence(uid))
@@ -29,9 +47,9 @@ function* userPresenceWorker (uid) {
 function* userFollowersWorker (uid, type) {
     try {
         const followersUids = yield call(() => getFollowUids(uid, type))
-        const followersNames = yield call(() => getNames(followersUids))
+        const followersNames_Photos = yield call(() => getNames_Photos(followersUids))
 
-        yield put(followSuccess(followersNames, type))
+        yield put(followSuccess(followersNames_Photos, type))
     } catch (e) {
         console.log(e)
     }
@@ -40,9 +58,9 @@ function* userFollowersWorker (uid, type) {
 function* userFollowingWorker (uid, type) {
     try {
         const followingUids = yield call(() => getFollowUids(uid, type))
-        const followingNames = yield call(() => getNames(followingUids))
+        const followingNames_Photos = yield call(() => getNames_Photos(followingUids))
 
-        yield put(followSuccess(followingNames, type))
+        yield put(followSuccess(followingNames_Photos, type))
     } catch (e) {
         console.log(e)
     }
@@ -77,7 +95,16 @@ function* userDataWorker (uid) {
 }
 
 
-async function getNames (uids) {
+async function updateUserName (name) {
+    console.log(name)
+    await database.ref(`users/${authentication.currentUser.uid}/user_data/user_name`).set(name)
+}
+
+async function updateUserData (data) {
+    await database.ref(`users/${authentication.currentUser.uid}/user_data`).set(data)
+}
+
+async function getNames_Photos (uids) {
     if (uids) {
 
         const users = {}
@@ -85,7 +112,10 @@ async function getNames (uids) {
         await database.ref(`users`).once('value', snapshot => {
             snapshot.forEach(user => {
                 if(uids.includes(user.key)) {
-                    users[user.key] = user.val().user_data.user_name
+                    users[user.key] = {
+                        user_name: user.val().user_data.user_name,
+                        defaultPhotoSrc: user.val().user_data.defaultPhotoSrc
+                    }
                 }
             })
         })

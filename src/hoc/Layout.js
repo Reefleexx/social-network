@@ -1,22 +1,33 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import classes from './Layout.module.scss'
-import {connect, useDispatch} from "react-redux";
-import WarningWin from "../containers/warningWin/warningWin";
-import Alert from "../components/UI/Alert/Alert";
-import AllFollows from "../containers/allFollows/allFollows";
+import {connect} from "react-redux";
 import Drawer from "../containers/Drawer/Drawer";
-import {closeAll} from "../redux/actions/userActions";
-import {closeDrawer, closeWarningWin} from "../redux/actions/appActions";
+import {closeDrawer} from "../redux/actions/appActions";
 import NewMessage from "../components/UI/NewMessage/NewMessage";
 import {CSSTransition} from "react-transition-group";
 import messageClasses from '../components/UI/NewMessage/NewMessage.module.scss'
+import Alert from "../components/UI/Alert/Alert";
 
 const Layout = (props) => {
 
     const shouldMessage = props.message && Object.entries(props.message).length !== 0
 
+    useEffect(() => {
+        if (props.component) {
+            console.log('say hi')
+            document.body.style.overflow = 'hidden'
+        }
+    }, [])
+
     return(
         <>
+
+            {
+                props.error &&
+                    <Alert
+                        error={props.error}
+                    />
+            }
 
             {
                 props.component ?
@@ -58,6 +69,7 @@ const mapStateToProps = state => {
     return {
         message: state.app.message,
         component: state.app.component,
+        error: state.app.error
     }
 }
 

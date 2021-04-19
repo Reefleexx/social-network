@@ -1,4 +1,4 @@
-import {ADD_PHOTO, FETCH_LIKE_PHOTO, SUCCESS_ALL_PHOTOS} from "../types";
+import {ADD_PHOTO, CHANGE_DEFAULT_PHOTO, CLEAR_ALL_PHOTOS_STORE, FETCH_LIKE_PHOTO, SUCCESS_ALL_PHOTOS} from "../types";
 
 export const addPhoto = (photo) => {
     return {
@@ -39,5 +39,18 @@ export const fetchLikePhoto = (photoKey, user_uid, isLiked) => {
     return {
         type: FETCH_LIKE_PHOTO,
         photoKey, user_uid, isLiked
+    }
+}
+
+export const clearAllPhotosStore = () => {
+    return {
+        type: CLEAR_ALL_PHOTOS_STORE
+    }
+}
+
+export const changeDefaultPhoto = photo => {
+    return {
+        type: CHANGE_DEFAULT_PHOTO,
+        photo
     }
 }

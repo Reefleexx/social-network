@@ -1,10 +1,12 @@
 import {
+    CHANGE_DEFPHOTO_URL,
     CLEAR_USER_DATA, CLOSE_ALL, FETCH_PRESENCE,
     FOLLOWERS_SUCCESS,
     FOLLOWING_SUCCESS,
     OPEN_ALL,
-    SUCCESS_USER_DATA
+    SUCCESS_USER_DATA, SUCCESS_USER_NAME
 } from "../types";
+
 
 const initialState = {
     presence: 'offline',
@@ -21,7 +23,7 @@ const initialState = {
         name: '___',
         surname: '___',
         user_name: '___',
-        about: '',
+        about: ''
     },
     followers: {},
     following: {},
@@ -50,27 +52,13 @@ export default function userReducer (state = initialState, action) {
         case FOLLOWERS_SUCCESS: {
             return {
                 ...state,
-                followers: Object.keys(action.followers).reduce((result, key) => {
-                    result[key] = {
-                        ...state.followers[key],
-                        user_name: action.followers[key]
-                    }
-
-                    return result
-                }, {})
+                followers: action.followers
             }
         }
         case FOLLOWING_SUCCESS: {
             return {
                 ...state,
-                following: Object.keys(action.following).reduce((result, key) => {
-                    result[key] = {
-                        ...state.following[key],
-                        user_name: action.following[key]
-                    }
-
-                    return result
-                }, {})
+                following: action.following
             }
         }
         case OPEN_ALL: {
@@ -83,6 +71,24 @@ export default function userReducer (state = initialState, action) {
             return {
                 ...state,
                 allType: null
+            }
+        }
+        case CHANGE_DEFPHOTO_URL: {
+            return {
+                ...state,
+                user_data: {
+                    ...state.user_data,
+                    defaultPhotoSrc: action.photoUrl
+                }
+            }
+        }
+        case SUCCESS_USER_NAME: {
+            return {
+                ...state,
+                user_data: {
+                    ...state.user_data,
+                    user_name: action.name
+                }
             }
         }
         default: return state

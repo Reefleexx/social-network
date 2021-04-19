@@ -1,29 +1,57 @@
 import React, {useEffect} from 'react'
 import classes from './Profile.module.scss'
-import photo from '../../../img/wide.jpg'
-import Photo from '../../../img/tall.jpg'
 import Button from "../../../components/Forms/Button/Button";
 import IconProfile from "../../../components/UI/IconProfile/IconProfile";
 import {useDispatch, useSelector} from "react-redux";
-import {fetchUser, followUser, openAllType, unFollowUser} from "../../../redux/actions/userActions";
+import {fetchUser, followUser, unFollowUser} from "../../../redux/actions/userActions";
 import {withRouter} from "react-router";
 import {openDrawer} from "../../../redux/actions/appActions";
 import AllFollows from "../../allFollows/allFollows";
+import {database} from "../../../bl/firebaseConfig";
+import {
+    addPhoto,
+    changeDefaultPhoto,
+    clearAllPhotosStore,
+    sortAllPhotos
+} from "../../../redux/actions/allPhotosActions";
+import AddPhotoButton from "../../../components/AddPhotoButton/AddPhotoButton";
+import PhotoList from "../../../components/PHOTO_SHIT/PhotoList/PhotoList";
+import ChangeUserName from "../../ChangeUserName/ChangeUserName";
 
 
 const Profile = (props) => {
 
     const dispatch = useDispatch()
+
     const uid = useSelector(state => state.auth.uid)
     const user = useSelector(state => state.user)
+    const allPhotos = useSelector(state => state.allPhotos.allPhotos)
+    const defaultPhotoSrc = useSelector(state => state.app.defaultPhotoSrc)
 
     const isFollow = Object.keys(user.followers).includes(uid)
 
     const user_data = user.user_data
     const path = props.match.params.uid
+    const user_uid = path ? path : uid
+
+    useEffect(async () => {
+        dispatch(fetchUser(user_uid))
+
+        await database.ref(`users/${user_uid}/photos`).on('value', snap => {
+            const allPhotos = snap.val()
+
+            if (allPhotos) {
+                dispatch(sortAllPhotos(allPhotos))
+            }
+        })
+    }, [])
 
     useEffect(() => {
-        dispatch(fetchUser(path ? path : uid))
+        return () => {
+            database.ref(`users/${user_uid}/photos`).off()
+
+            dispatch(clearAllPhotosStore())
+        }
     }, [])
 
     const onWhiteButton = (e, type) => {
@@ -59,12 +87,6 @@ const Profile = (props) => {
                 </span>
                 {Object.keys(user[type]).length > 0 && <span onClick={e => onViewAll(e, type)} className={`${classes.barTextRight}`}>View all</span>}
             </div>
-        )
-    }
-
-    const renderUserPhotos = () => {
-        return (
-            ''
         )
     }
 
@@ -104,7 +126,6 @@ const Profile = (props) => {
                         <span className={classes.data_itemRight}>{user_data.about}</span>
                     </div> : null
                 }
-
             </div>
         )
     }
@@ -114,7 +135,8 @@ const Profile = (props) => {
         const users = Object.keys(user[type]).map(uid => {
             return {
                 uid,
-                user_name: user[type][uid].user_name
+                user_name: user[type][uid].user_name,
+                defaultPhotoSrc: user[type][uid].defaultPhotoSrc
             }
         })
 
@@ -124,7 +146,7 @@ const Profile = (props) => {
                     {
                         users.map(user => <IconProfile key={user.uid}
                                                        name={user.user_name}
-                                                       photo={photo}
+                                                       photo={user.defaultPhotoSrc ? user.defaultPhotoSrc : defaultPhotoSrc}
                                                        uid={user.uid}/>)
                     }
                 </div>
@@ -138,7 +160,7 @@ const Profile = (props) => {
                         {
                             users.slice(0, 3).map(user => <IconProfile key={user.uid}
                                                                        name={user.user_name}
-                                                                       photo={photo}
+                                                                       photo={user.defaultPhotoSrc ? user.defaultPhotoSrc : defaultPhotoSrc}
                                                                        uid={user.uid}/>)
                         }
                     </div>
@@ -146,7 +168,7 @@ const Profile = (props) => {
                         {
                             users.slice(3, 6).map(user => <IconProfile key={user.uid}
                                                                        name={user.user_name}
-                                                                       photo={photo}
+                                                                       photo={user.defaultPhotoSrc ? user.defaultPhotoSrc : defaultPhotoSrc}
                                                                        uid={user.uid}/>)
                         }
                     </div>
@@ -184,14 +206,53 @@ const Profile = (props) => {
             )
         } else {
             return (
-                <Button
-                    type={'white'}
-                    text={'New default photo'}
-                    onClick={e => e.preventDefault('new_photo')}
-                    size={'3'}
+                <AddPhotoButton
+                    onConfirm={onChangeDefPhoto}
+                    class={'default'}
+                    text={'New photo'}
+                    size={'small'}
                 />
             )
         }
+    }
+
+    const renderPhotoAlbum = () => {
+        if (allPhotos) {
+            return (
+                <PhotoList
+                    size={'small'}
+                    allPhotos={allPhotos}
+                />
+            )
+        } else {
+            return (
+                <div className={classes.no_photos_container}>
+                    <h3 className={classes.no_photos_headline}>
+                        No photos yet
+                    </h3>
+                </div>
+            )
+        }
+    }
+
+    const onChangeDefPhoto = photo => {
+        dispatch(changeDefaultPhoto(photo))
+    }
+
+    const onAddPhoto = photo => {
+        dispatch(addPhoto(photo))
+    }
+
+    const editUserDataHandler = e => {
+        e.preventDefault()
+
+        props.history.push('/edit')
+    }
+
+    const changeUserName = e => {
+        e.preventDefault()
+
+        dispatch(openDrawer(() => <ChangeUserName defaultValue={user.user_data.user_name}/>))
     }
 
     return(
@@ -201,7 +262,10 @@ const Profile = (props) => {
 
                     <div className={`${classes.photoContainer}`}>
                         <div className={classes.photo_img}>
-                            <img src={Photo} alt="#"/>
+                            <img
+                                src={user.user_data.defaultPhotoSrc ? user.user_data.defaultPhotoSrc : defaultPhotoSrc}
+                                alt="#"
+                            />
                         </div>
                         {
                             path === uid ? null : renderUnderPhotoButtons()
@@ -227,7 +291,12 @@ const Profile = (props) => {
                             <div className={classes.userNameItem}>
                                 <span className={classes.userName_text}>{user_data.user_name}</span>
                                 {
-                                    path ? null : <span className={classes.userName_edit}>Edit user name</span>
+                                    path ? null : <span
+                                        className={classes.userName_edit}
+                                        onClick={e => changeUserName(e)}
+                                    >
+                                        Edit user name
+                                    </span>
                                 }
                             </div>
                             <span className={classes.userStatus}>{user.presence}</span>
@@ -241,7 +310,7 @@ const Profile = (props) => {
                             {
                                 path ? null : <Button
                                     type={'forProfile'}
-                                    onClick={e => e.preventDefault()}
+                                    onClick={e => editUserDataHandler(e)}
                                     text={'Edit user data'}
                                 />
                             }
@@ -251,14 +320,20 @@ const Profile = (props) => {
                     </div>
 
                     <div className={classes.userPhotos}>
-                        <div className={classes.userPhotoText}>
-                            <span>My photos</span>
-                            <span>Add new one</span>
-                        </div>
+                        {
+                            !path && <>
+                                <div className={classes.add_photo_button}>
+                                    <AddPhotoButton
+                                        onConfirm={onAddPhoto}
+                                        text={'Add new one'}
+                                        size={'normal'}
+                                    />
+                                </div>
+                                <hr/>
+                            </>
+                        }
 
-
-                        {renderUserPhotos()}
-
+                        {renderPhotoAlbum()}
                     </div>
 
                 </div>

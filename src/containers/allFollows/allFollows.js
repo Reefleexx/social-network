@@ -1,9 +1,8 @@
 import React, {useEffect} from 'react'
 import classes from './allFollows.module.scss'
 import IconProfile from "../../components/UI/IconProfile/IconProfile";
-import photo from "../../img/wide.jpg";
 import {useDispatch, useSelector} from "react-redux";
-import {closeAll, fetchUserFollowers, fetchUserFollowing} from "../../redux/actions/userActions";
+import {fetchUserFollowers, fetchUserFollowing} from "../../redux/actions/userActions";
 import {withRouter} from "react-router";
 import {closeDrawer} from "../../redux/actions/appActions";
 import {preventPropagation} from "../../bl/functions";
@@ -11,8 +10,10 @@ import {preventPropagation} from "../../bl/functions";
 const AllFollows = (props) => {
 
     const dispatch = useDispatch()
+
     const users = useSelector(state => state.user[props.type])
     const uid = useSelector(state => state.auth.uid)
+    const defaultPhotoSrc = useSelector(state => state.app.defaultPhotoSrc)
 
     const path = props.location.pathname.split('/')[2]
 
@@ -45,7 +46,9 @@ const AllFollows = (props) => {
                                 {
                                     Object.keys(users).length > 5 &&
                                     Object.keys(users).slice(i, i + 4).map((el, i) => {
-                                        console.log(users[el])
+                                        const photo = users[el].defaultPhotoSrc ?
+                                            users[el].defaultPhotoSrc :
+                                            defaultPhotoSrc
                                         return (
                                             <IconProfile
                                                 key={i}
@@ -60,6 +63,10 @@ const AllFollows = (props) => {
                                 {
                                     Object.keys(users).length <= 5 &&
                                     Object.keys(users).map((el, i) => {
+                                        const photo = users[el].defaultPhotoSrc ?
+                                            users[el].defaultPhotoSrc :
+                                            defaultPhotoSrc
+
                                         return (
                                             <IconProfile
                                                 key={i}

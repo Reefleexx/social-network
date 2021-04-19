@@ -1,6 +1,5 @@
-import React, {useState, useEffect, useRef, useCallback} from 'react'
+import React, {useState, useEffect, useRef} from 'react'
 import classes from './Chat.module.scss'
-import photo from "../../../img/wide.jpg";
 import {withRouter} from "react-router";
 import {useDispatch, useSelector} from "react-redux";
 import {fetchMessages, fetchNewMessage, fetchUpdateMessages, fetchUserData} from "../../../redux/actions/chatActions";
@@ -12,10 +11,12 @@ const Chat = (props) => {
     // TODO add possibility to chat yourself
 
     const dispatch = useDispatch()
+    const textareaRef = useRef()
 
     const chat_data = useSelector(state => state.chat)
     const messages = useSelector(state => state.chat.messages)
     const uid = useSelector(state => state.auth.uid)
+    const defaultPhotoSrc = useSelector(state => state.app.defaultPhotoSrc)
 
     const userUid = props.match.params.uid
 
@@ -80,14 +81,35 @@ const Chat = (props) => {
         }
     }, [chat_data.chatKey])
 
-    const changeHandler = e => {
-        e.preventDefault()
-        if (e.target.value.match(/\n/)) {
-          onSend(e)
+    useEffect(() => {
+        const el = textareaRef.current
+        const offSet = el.offsetHeight - el.clientHeight
+
+        el.style.height = el.scrollHeight + (el.offsetHeight - el.clientHeight) + 'px'
+
+        if (el.innerHeight < el.scrollHeight) {
+            el.style.height = el.scrollHeight + offSet + 'px'
         } else {
-            changeArea(e.target.value)
+            el.style.height = 'auto'
+            el.style.height = el.scrollHeight + offSet + 'px'
         }
 
+        window.scrollTo({
+            top: window.innerHeight
+        })
+    }, [areaValue])
+
+    const changeHandler = e => {
+        e.preventDefault()
+
+        if (e.target.value.match(/\n/)) {
+            onSend(e)
+            changeArea('')
+        } else {
+            const newValue = e.target.value
+
+            changeArea(newValue < 800 ? newValue : newValue.slice(0, 800))
+        }
     }
 
     ////////// Component handlers \\\\\\\\\\\\
@@ -99,8 +121,13 @@ const Chat = (props) => {
 
     const onSend = e => {
         e.preventDefault()
+
         if (areaValue) {
             changeArea('')
+
+            const el = textareaRef.current
+            el.style.height = 'auto'
+
             dispatch(fetchNewMessage(areaValue, new Date().getTime(), userUid))
         }
     }
@@ -129,10 +156,29 @@ const Chat = (props) => {
                                 message: messages[timeStamp].sender === userUid ? classes.user_message : classes.my_message
                             }
 
+                            const words = messages[timeStamp].text.split(' ')
+
+                            const filterWords = words.reduce((result, word) => {
+                                const size = 30
+                                if (word.length > size) {
+                                    const times = Math.ceil(word.length / size)
+                                    const subWords = []
+
+                                    for(let i = 0; i < times; i++) {
+                                        subWords[i] = word.slice((i * size), ((i * size) + size))
+                                    }
+
+                                    return [...result, ...subWords]
+                                }
+                                return [...result, word]
+                            }, [])
+
                             return (
                                 <div className={cls.row} key={i}>
                                     <div className={cls.message}>
-                                        {messages[timeStamp].text}
+                                        <span>
+                                            {filterWords.join(' ')}
+                                        </span>
                                     </div>
                                 </div>
                             )
@@ -157,7 +203,11 @@ const Chat = (props) => {
                     </span>
 
                     <div className={classes.imgContainer}>
-                        <img src={photo} alt={'alt'} onClick={e => openUserProfile(e)}/>
+                        <img
+                            src={chat_data.photo_url ? chat_data.photo_url : defaultPhotoSrc}
+                            alt={'alt'}
+                            onClick={e => openUserProfile(e)}
+                        />
                     </div>
                 </div>
 
@@ -171,10 +221,11 @@ const Chat = (props) => {
                     >
                         <textarea
                             value={areaValue}
+                            ref={textareaRef}
                             name={'message_text'}
                             onChange={e => changeHandler(e)}
                             cols="30"
-                            rows={'auto'}
+                            rows={2}
                             className={classes.foot_text}
                               placeholder={'Write something...'}
                         />

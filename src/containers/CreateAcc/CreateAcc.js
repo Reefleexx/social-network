@@ -155,14 +155,6 @@ const CreateAcc = (props) => {
                             values={location}
                         />
 
-                        {/*<Input*/}
-                        {/*    type={'about'}*/}
-                        {/*    errorToggler={isErrorHandler}*/}
-                        {/*    error={isError}*/}
-                        {/*    onChange={changeValues}*/}
-                        {/*    validChange={validChange}*/}
-                        {/*/>*/}
-
                         <TextArea
                             onChange={changeValues}
                             label={'About'}

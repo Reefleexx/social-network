@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React from 'react'
 import classes from './Select.module.scss'
 
 const Calendar = (props) => {
@@ -31,21 +31,29 @@ const Calendar = (props) => {
     }
 
     return(
-        <div className={classes.wrapper}>
+        <div className={!props.edit ? classes.reg_wrapper : classes.wrapper}>
+
             <select
                 id={classes.day}
                 onChange={e => props.onChange(e, 'day')}
+                defaultValue={props.value ? props.value.day : 1}
             >
                 {
-                    days.map(day => (
-                        <option value={day + 1} key={day}>
-                            {day + 1}
-                        </option>
-                    ))
+                    days.map(day => {
+                        return (
+                            <option value={day + 1} key={day}>
+                                {day + 1}
+                            </option>
+                        )
+                    })
                 }
             </select>
 
-            <select id={classes.month} onChange={e => props.onChange(e, 'month')}>
+            <select
+                id={classes.month}
+                onChange={e => props.onChange(e, 'month')}
+                defaultValue={props.value ? props.value.month : 1}
+            >
                 {
                     months.map((month, i) => {
                         return (
@@ -57,7 +65,11 @@ const Calendar = (props) => {
                 }
             </select>
 
-            <select id={classes.year} onChange={e => props.onChange(e, 'year')}>
+            <select
+                id={classes.year}
+                onChange={e => props.onChange(e, 'year')}
+                defaultValue={props.value ? props.value.year : ''}
+            >
                 {
                     years.map((year, i) => {
                         return (

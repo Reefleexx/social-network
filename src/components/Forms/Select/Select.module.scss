@@ -1,8 +1,47 @@
-.wrapper select
+.reg_wrapper select
 {
   background-color: whitesmoke;
   width: 30%;
   margin: 0 .1rem 0 0;
+  z-index: 100;
+  font-size: 100%;
+  padding: .3rem .6rem .3rem .6rem;
+  font-family: Segoe UI, Helvetica, sans-serif;
+  border: 1px solid #D0D0D0;
+  box-sizing: border-box;
+  outline: none;
+  border-radius: 4px;
+}
+
+//.wrapper {
+//  width: 100%;
+//  display: flex;
+//  padding: .2rem .5rem;
+//  div {
+//    select {
+//      margin: 0;
+//      &:first-of-type {
+//        margin-bottom: .5rem;
+//      }
+//    }
+//  }
+//}
+
+.wrapper {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  margin-bottom: .9rem;
+  div {
+    select {
+      margin-bottom: .9rem;
+    }
+  }
+}
+
+.wrapper select {
+  background-color: whitesmoke;
+  width: 100%;
   z-index: 100;
   font-size: 100%;
   padding: .3rem .6rem .3rem .6rem;

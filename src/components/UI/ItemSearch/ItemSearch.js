@@ -2,9 +2,11 @@ import React from 'react'
 import classes from './ItemSearch.module.scss'
 import Button from "../../Forms/Button/Button";
 import {withRouter} from "react-router";
-import photo from '../../../img/tall.jpg'
+import {useSelector} from "react-redux";
 
 const ItemSearch = (props) => {
+
+    const defaultPhotoSrc = useSelector(state => state.app.defaultPhotoSrc)
 
     const onClickHandler = e => {
         e.preventDefault()
@@ -14,7 +16,7 @@ const ItemSearch = (props) => {
     return(
         <div className={classes.ItemSearch} key={props.i}>
             <div className={classes.img_container}>
-                <img src={photo} alt={'photo'}/>
+                <img src={props.defaultPhotoSrc ? props.defaultPhotoSrc : defaultPhotoSrc} alt={'photo'}/>
             </div>
 
             <span className={classes.name}>
@@ -28,7 +30,6 @@ const ItemSearch = (props) => {
                 size={'0'}
             />
 
-            <i className="far fa-star"/>
         </div>
     )
 }

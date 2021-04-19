@@ -1,4 +1,4 @@
-import {FETCH_ADD_COMMENT, FETCH_ALL_COMMENTS, SUCCESS_ALL_COMMENTS} from "../types";
+import {CLEAR_PHOTO_STORE, FETCH_ADD_COMMENT, FETCH_ALL_COMMENTS, SUCCESS_ALL_COMMENTS} from "../types";
 
 export const addComment = (value, photoKey, user_uid, timeStamp) => {
     return {
@@ -13,5 +13,11 @@ export const successAllComments = allComments => {
     return {
         type: SUCCESS_ALL_COMMENTS,
         allComments
+    }
+}
+
+export const clearPhotoStore = () => {
+    return {
+        type: CLEAR_PHOTO_STORE
     }
 }

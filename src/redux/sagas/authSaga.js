@@ -6,6 +6,9 @@ import {fetchAuth, fetchAuthCheck} from "../actions/authActions";
 import {clearUserData} from "../actions/userActions";
 import {changePresence} from "../../bl/firebaseFunctions";
 import {clearChatStore} from "../actions/chatActions";
+import {clearPhotoStore} from "../actions/photoActions";
+import {clearAllPhotosStore} from "../actions/allPhotosActions";
+import {clearSearchStore} from "../actions/searchActions";
 
 
 export default function* authWatcher () {
@@ -23,6 +26,9 @@ function* signOutWorker () {
 
     yield put(clearUserData())
     yield put(clearChatStore())
+    yield put(clearPhotoStore())
+    yield put(clearAllPhotosStore())
+    yield put(clearSearchStore())
 
     yield call(() => changePresence('offline'))
 
@@ -87,4 +93,6 @@ async function clearDatabaseListeners (uid, allChats) {
     await allChats.forEach(chatKey => {
         database.ref(`chats/${chatKey}`).off()
     })
+
+    await database.ref(`users/${uid}/photos`).off()
 }

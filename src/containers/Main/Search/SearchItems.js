@@ -10,6 +10,7 @@ const SearchItems = (props) => {
                         key={i}
                         user_name={user.user_data.user_name}
                         uid={user.uid}
+                        defaultPhotoSrc={user.user_data.defaultPhotoSrc}
                     />
                 ))
             }

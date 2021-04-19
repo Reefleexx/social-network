@@ -1,0 +1,109 @@
+$backColor: rgba(165, 165, 165, 0.7);
+
+.EditUserData {
+  width: 50%;
+  left: 0;
+  margin: 0 auto;
+  justify-self: left;
+  background: rgb(227, 232, 233);
+  border-radius: 5px;
+  padding: 1.5vmin 1.5vmin 1.5rem 1.5vmin;
+  display: flex;
+}
+
+.main_headline {
+  font-size: 1.9rem;
+  font-weight: 500;
+  margin-bottom: .4rem;
+  font-style: italic;
+  color: #838888;
+  text-shadow: 1px 2px 4px #f1f1f1, 0 0 1px #000000;
+  text-align: center;
+}
+
+hr {
+  height: 1px;
+  width: 90%;
+}
+
+.wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.input_fields {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+  width: 85%;
+}
+
+.input_item {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  input {
+    background-color: whitesmoke;
+    width: 100%;
+    z-index: 100;
+    padding: .3rem .6rem .3rem .6rem;
+    font-family: Segoe UI, Helvetica, sans-serif;
+    font-size: 1.1rem;
+    border: 1px solid #D0D0D0;
+    box-sizing: border-box;
+    outline: none;
+    border-radius: 4px;
+    margin-bottom: .9rem;
+  }
+}
+
+.input_label {
+  width: 35%;
+  font-size: 1.1rem;
+  color: rgba(58,77,90,0.84)
+}
+
+.input_right_side {
+  width: 100%;
+  textarea {
+    background-color: whitesmoke;
+    font-family: Segoe UI, Helvetica, sans-serif;
+    font-size: 1.1rem;
+    border: 1px solid #D0D0D0;
+    border-radius: 6px;
+    width: 100%;
+    padding: .3rem .6rem .3rem .6rem;
+    margin-right: 1rem;
+    overflow: hidden;
+    resize: none;
+    &:focus {
+      outline: none;
+    }
+  }
+}
+
+.confirm_button {
+  padding: .4rem;
+  border: 0;
+  box-shadow: 0 0 1px #4f5656;
+  text-transform: uppercase;
+  font-size: 1.5rem;
+  font-weight: 500;
+  border-radius: 7px;
+  color: #ffffff;
+  text-shadow: 1px 1px 3px black, 0 0 .6rem black;
+  background: #f4f9fc;
+  width: 70%;
+  transition: 150ms;
+  &:hover {
+    background: #282929;
+    outline: none;
+    text-shadow: 1px 1px 3px black, 0 0 .4rem #ffffff;
+  }
+  &:focus {
+    outline: none;
+  }
+}

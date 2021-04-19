@@ -1,4 +1,4 @@
-import {FETCH_LIKE_PHOTO, SUCCESS_ALL_PHOTOS, SUCCESS_LIKE_PHOTO} from "../types";
+import {CLEAR_ALL_PHOTOS_STORE, FETCH_LIKE_PHOTO, SUCCESS_ALL_PHOTOS, SUCCESS_LIKE_PHOTO} from "../types";
 
 const initialState = {
     // id: '',
@@ -21,6 +21,11 @@ export default function allPhotosReducer (state = initialState, action) {
             return {
                 ...state,
                 allPhotos: action.allPhotos
+            }
+        }
+        case CLEAR_ALL_PHOTOS_STORE: {
+            return {
+                ...initialState
             }
         }
         default: return state

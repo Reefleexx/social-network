@@ -27,16 +27,13 @@ async function searchUsers (query) {
             const uid = userSnap.key
             const user = userSnap.val()
 
-            if (uid !== authentication.currentUser) {
+            const userName = user.user_data.user_name.toLowerCase()
 
-                const userName = user.user_data.user_name.toLowerCase()
-
-                if (userName.includes(query.toLowerCase())){
-                    usersList.push({
-                        ...user,
-                        uid
-                    })
-                }
+            if (userName.includes(query.toLowerCase())){
+                usersList.push({
+                    uid,
+                    ...user
+                })
             }
         })
     })

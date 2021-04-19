@@ -22,7 +22,7 @@ export function showAlert (text) {
 
         timer1 = setTimeout(() => {
             dispatch(hideAlert())
-        }, 9000)
+        }, 90000)
     }
 }
 
@@ -87,6 +87,7 @@ export const hideNewMessage = () => {
 }
 
 export const openDrawer = (component) => {
+    document.body.style.overflow = 'hidden'
     return {
         type: OPEN_DRAWER,
         component
@@ -94,6 +95,7 @@ export const openDrawer = (component) => {
 }
 
 export const closeDrawer = () => {
+    document.body.style.overflow = 'scroll'
     return {
         type: CLOSE_DRAWER
     }

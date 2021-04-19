@@ -57,13 +57,14 @@
   transition: 150ms;
   cursor: pointer;
   &:hover {
-    font-size: 1.4rem;
+    transform: scale(1.05);
   }
 }
 
 .message_last_text {
   font-size: .85rem;
   color: #e5f6f6;
+  width: 100%;
 }
 
 .message_data {

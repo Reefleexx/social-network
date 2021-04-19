@@ -1,0 +1,48 @@
+@mixin btn_class {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: .3rem 0;
+  margin: .3rem 0;
+  border: 0;
+  transition: 150ms;
+}
+
+.add_button {
+  @include btn_class;
+  border-radius: 10px;
+  background-color: rgb(237, 245, 245);
+  font-weight: 500;
+  color: #4f5656;
+  text-shadow: 0 0 1px #4f5656;
+  &:focus {
+    outline: none;
+  }
+  &:hover {
+    transform: scale(1.1)
+  }
+}
+
+.add_def_button {
+  @include btn_class;
+  border-radius: 7px;
+  background-color: whitesmoke;
+  font-weight: 500;
+  color: rgb(71, 67, 67);
+  text-shadow: 0 0 1px #000000, 1px 1px 4px #ffffff;
+  &:focus {
+    outline: none;
+  }
+  &:hover {
+    transform: scale(1.05)
+  }
+}
+
+.size_small {
+  font-size: 1.3rem;
+}
+
+.size_normal {
+  font-size: 1.9rem;
+}

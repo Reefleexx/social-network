@@ -1,15 +1,16 @@
 import {
-    CHANGE_MESSAGES_TYPE,
     CLEAR_CHAT_STORE,
-    FETCH_UPDATE_MESSAGES, REMOVE_CHAT_FROM_DOM,
+    FETCH_UPDATE_MESSAGES,
+    REMOVE_CHAT_FROM_DOM,
     SUCCESS_ALL_CHATS,
     SUCCESS_MESSAGES,
     SUCCESS_USER_DATA_CHAT
 } from "../types";
 
+
 const initialState = {
     user_name: '___',
-    photo_url: '___',
+    photo_url: '',
     messages: {},
     chatKey: null,
     latestChats: []
@@ -20,7 +21,8 @@ export default function chatReducer (state = initialState, action) {
         case SUCCESS_USER_DATA_CHAT: {
             return {
                 ...state,
-                user_name: action.user_name
+                user_name: action.user_name,
+                photo_url: action.defaultPhotoSrc
             }
         }
         case SUCCESS_MESSAGES: {

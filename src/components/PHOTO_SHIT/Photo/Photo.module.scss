@@ -1,0 +1,222 @@
+.Photo {
+  background-color: rgb(237, 245, 245);
+  border-radius: 6px;
+  max-height: 92vh;
+  top: 7%;
+  overflow-y: scroll;
+  hr {
+    height: 1px;
+    color: #969999;
+    width: 98%;
+  }
+  &::-webkit-scrollbar {
+    width: 0;
+  }
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.photo_part {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem 1.5rem;
+}
+
+.photo_container {
+  position: relative;
+  img {
+    border-radius: 7px;
+    max-width: 60vw;
+    max-height: 50vh;
+    min-height: 40vh;
+    object-fit: contain;
+  }
+}
+
+@mixin arrow-buttons {
+  position: absolute;
+  height: 100%;
+  padding: 0 .4rem;
+  font-size: 4.5rem;
+  opacity: 0;
+  transition: 150ms;
+  background-color: rgba(36, 33, 33, .4);
+  color: #242121;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  &:hover {
+    opacity: 1;
+  }
+}
+
+#prev_button {
+  @include arrow-buttons;
+  border-top-left-radius: 7px;
+  border-bottom-left-radius: 7px;
+}
+
+#next_button {
+  @include arrow-buttons;
+  border-top-right-radius: 7px;
+  border-bottom-right-radius: 7px;
+  right: 0;
+}
+
+.photo_action_buttons {
+  width: 15%;
+  min-width: 10vw;
+  display: flex;
+  justify-content: space-between;
+  margin-left: 1rem;
+  color: #6b7272;
+  i {
+    font-size: 220%;
+    cursor: pointer;
+    transition: 150ms;
+    &:hover {
+      transform: scale(1.1)
+    }
+  }
+}
+
+.comments_part {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.comments_items {
+  width: 85%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  hr {
+    margin: .45rem 0;
+  }
+}
+
+.comment_item {
+  display: flex;
+  position: relative;
+  justify-content: start;
+  align-items: start;
+  width: 100%;
+  img {
+    cursor: pointer;
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+  pre {
+    margin: 0;
+    max-width: 45vw;
+    font-size: 1rem;
+    line-height: 100%;
+    overflow: hidden;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+  }
+}
+
+.comment_leftSide {
+  margin-right: .5rem;
+}
+
+.comment_rightSide {
+  max-width: 90%;
+}
+
+.comment_user_nick {
+  font-weight: 500;
+  font-size: 1.1rem;
+  color: #253134;
+  cursor: pointer;
+}
+
+.comment-main_text {
+  inline-size: 80%;
+  font-size: 1rem;
+}
+
+.comment_time {
+  margin-top: .2rem;
+  font-size: .9rem;
+  color: #8c8888;
+  margin-left: .15rem;
+}
+
+.bottom_border {
+  border-bottom: 1px solid #969999;
+  margin-bottom: .4rem;
+}
+
+.send_part {
+  display: flex;
+  flex-direction: row;
+  width: 88%;
+  align-items: center;
+  padding-left: 2rem;
+  margin-bottom: .8rem;
+  img {
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+    margin-right: 1rem;
+    cursor: pointer;
+    object-fit: cover;
+  }
+  i {
+    cursor: pointer;
+    font-size: 2.2rem;
+    align-self: center;
+    margin-left: 2rem;
+  }
+}
+
+.textarea_form {
+  width: 70%;
+  textarea {
+    border: 1px solid #a1a3a5;
+    border-radius: 6px;
+    font-size: 130%;
+    width: 100%;
+    padding: .2rem;
+    margin-right: 1rem;
+    overflow: hidden;
+    resize: none;
+    &:focus {
+      outline: none;
+    }
+  }
+}
+
+@mixin comment-inscription {
+  color: #2884f6;
+  font-weight: 600;
+  font-style: italic;
+  font-size: .8rem;
+  z-index: 200;
+  cursor: pointer;
+  position: absolute;
+}
+
+
+.show_all {
+ @include comment-inscription;
+  right: 0;
+}
+
+.hide_all {
+  @include comment-inscription;
+  right: 0;
+  bottom: 0;
+}

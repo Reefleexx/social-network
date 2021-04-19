@@ -9,6 +9,7 @@ import Profile from "../../containers/Main/Profile/Profile";
 import Messages from "../../containers/Main/Messages/Messages";
 import Search from "../../containers/Main/Search/Search";
 import Chat from "../../containers/Main/Chat/Chat";
+import EditUserData from "../../containers/EditUserData/EditUserData";
 
 
 const MainPage = (props) => {
@@ -23,6 +24,7 @@ const MainPage = (props) => {
             <Route path={'/search/:uid'} component={() => <Profile/>} exact={true}/>
             <Route path={'/:uid/chat'} component={Chat} exact={true}/>
             <Route path={'/messages'} component={Messages} exact={true}/>
+            <Route path={'/edit'} component={() => <EditUserData/>} exact={true}/>
             <Route path={'/profile'} component={() => <Profile/>} exact={true}/>
             <Route path={'/album'} component={Album} exact={true}/>
             <Route path={'/'} component={Search} exact={true}/>

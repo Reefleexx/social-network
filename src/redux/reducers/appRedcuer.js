@@ -5,10 +5,11 @@ import {
     CLOSE_WARNING_WIN,
     HIDE_NEW_MESSAGE,
     SUCCESS_NEW_MESSAGE,
-    OPEN_PHOTO,
     OPEN_DRAWER,
     CLOSE_DRAWER
 } from '../types'
+import defaultPhotoSrc from '../../no_default_photo_picture.png'
+
 
 const initialState = {
     error: null,
@@ -16,7 +17,8 @@ const initialState = {
     message: null,
     funcCallback: null,
     photo: null,
-    component: null
+    component: null,
+    defaultPhotoSrc: defaultPhotoSrc
 }
 
 export default function appReducer (state = initialState, action) {
@@ -67,12 +69,6 @@ export default function appReducer (state = initialState, action) {
             return {
                 ...state,
                 message: {}
-            }
-        }
-        case OPEN_PHOTO: {
-            return {
-                ...state,
-                photo: action.id
             }
         }
         default: return state
