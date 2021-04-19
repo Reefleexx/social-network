@@ -280,7 +280,7 @@ const Photo = (props) => {
                     <textarea
                         onChange={e => onChangeInputValue(e)}
                         value={value}
-                        rows={1}
+                        rows={'1'}
                         ref={textareaRef}
                         placeholder={'Leave your comment here...'}>
                     </textarea>

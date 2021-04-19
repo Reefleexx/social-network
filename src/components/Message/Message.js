@@ -1,7 +1,7 @@
 import React from 'react'
 import classes from './Message.module.scss'
 import {withRouter} from "react-router";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {deleteChat} from "../../redux/actions/chatActions";
 import {openDrawer} from "../../redux/actions/appActions";
 import WarningWin from "../../containers/warningWin/warningWin";
@@ -10,6 +10,7 @@ import {authentication} from "../../bl/firebaseConfig";
 const Message = (props) => {
 
     const dispatch = useDispatch()
+    const defaultPhotoSrc = useSelector(state => state.app.defaultPhotoSrc)
 
     const onOpenChat = (e) => {
         e.preventDefault()
@@ -56,7 +57,7 @@ const Message = (props) => {
     return(
         <div className={classes.message_container} onClick={e => onOpenChat(e)}>
             <div className={classes.img_container}>
-                <img src={props.photo} alt={'User photo'}/>
+                <img src={props.photo ? props.photo : defaultPhotoSrc} alt={'User photo'}/>
             </div>
 
             <div className={classes.message_text}>
@@ -64,8 +65,8 @@ const Message = (props) => {
                 <span className={classes.message_last_text + ' ' + (!props.checked ? classes.unChecked : '') }>
                     {
                         authentication.currentUser.uid === props.sender_uid ?
-                            `You: ${renderText()}` :
-                            `${props.user_name}: ${renderText()}`
+                            `You:   ${renderText()}` :
+                            `${props.user_name}:   ${renderText()}`
                     }
                 </span>
             </div>
