@@ -64,7 +64,7 @@ const Messages = (props) => {
                             const photo = el.message.sender_photo ?
                                 el.message.sender_photo :
                                 defaultPhoto
-                            console.log(el)
+
                             return (
                                 <Message
                                     key={el.user_uid}

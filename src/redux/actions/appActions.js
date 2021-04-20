@@ -50,7 +50,7 @@ export function closeWarningWin () {
 ////////////// New message pop up \\\\\\\\\\\\\\\\\
 let messageTimer
 
-export const showNewMessage = message => {
+export const showNewMessage = sender_uid => {
     return dispatch => {
         dispatch(hideNewMessage())
         clearTimeout(messageTimer)
@@ -58,15 +58,15 @@ export const showNewMessage = message => {
         messageTimer = setTimeout(() => {
             dispatch(hideNewMessage())
         }, 7000)
-        dispatch(fetchNewMessage(message))
+        dispatch(fetchNewMessage(sender_uid))
     }
 
 }
 
-const fetchNewMessage = message => {
+const fetchNewMessage = sender_uid => {
     return {
         type: SHOW_NEW_MESSAGE,
-        message
+        sender_uid
     }
 }
 

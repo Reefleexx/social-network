@@ -6,7 +6,6 @@ import {useDispatch, useSelector} from "react-redux";
 import {authentication} from "./bl/firebaseConfig";
 import {checkIfAuth} from "./redux/actions/authActions";
 import {database} from './bl/firebaseConfig'
-import {decodeKey} from "./bl/firebaseFunctions";
 import {showNewMessage} from "./redux/actions/appActions";
 import {updateChats} from "./redux/actions/chatActions";
 
@@ -19,7 +18,7 @@ let func
 
 function App(props) {
 
-    const user = useSelector(state => state.auth)
+    const currentUid = useSelector(state => state.auth.uid)
     const dispatch = useDispatch()
 
     func = () => {
@@ -27,67 +26,56 @@ function App(props) {
     }
 
     useEffect(() => {
-        setTimeout(() => {
-            if (user.uid) {
-                const userChats = database.ref(`users/${user.uid}/chats`)
-                const chats = database.ref(`chats`)
+        console.log(currentUid)
+        if (currentUid) {
+            const yourChatsRef = database.ref(`users/${currentUid}/chats`)
+            const allChatsRef = database.ref(`chats`)
 
-                let counter = 0
-                userChats.on('value', async snap => {
-                    const allUsers = snap.val()
+            let counter = 0
 
-                    const last = {
-                        key: '',
-                        user: '',
-                        timeStamp: 0
-                    }
+            yourChatsRef.on('value', yourChatsSnap => {
+                yourChatsSnap.forEach(yourChatSnap => {
+                    const chatKey = yourChatSnap.val()
 
-                    await snap.forEach(snapEl => {
-                        const element = snapEl.val()
+                    allChatsRef.child(chatKey).on('value', snap => {
+                        allChatsRef.child(chatKey).limitToLast(1).once('value', messageSnap => {
+                            const val = messageSnap.val()
 
-                        const timeStamp = decodeKey(element)
+                            const message = val[Object.keys(val)[0]]
+                            const timeStamp = Object.keys(val)[0]
 
-                        if (last.timeStamp < timeStamp) {
-                            last.key = element
-                            last.timeStamp = timeStamp
-                            last.user = snapEl.key
-                        }
+                            if (counter > 1) {
+                                if (message.sender !== currentUid) {
+                                    const path = window.location.pathname
+                                    const pathUid = path.split('/')[path.split('/').length - 1]
 
-                        chats.child(element).limitToLast(1).on('value', messages => {
-                            const messageItem = messages.val()
-
-                            const message = {
-                                key: messages.key,
-                                timeStamp:  Object.keys(messageItem)[0],
-                                user:  messageItem[Object.keys(messageItem)[0]].sender,
-                                text: messageItem[Object.keys(messageItem)[0]].text
-                            }
-                            counter += 1
-                            if (user.uid !== message.user) {
-                                if (counter > snap.numChildren()) {
-                                    const path = props.location.pathname.split('/')
-                                    const lastPage = path[path.length - 1]
-                                    if (lastPage !== 'chat' && lastPage !== 'messages') {
-                                        dispatch(showNewMessage(message))
+                                    if (pathUid !== 'chat' && pathUid !== 'messages') {
+                                        dispatch(showNewMessage(message.sender))
                                     }
-
-                                    if (lastPage === 'messages') {
-                                        dispatch(updateChats(message))
+                                    if (pathUid === 'messages') {
+                                        dispatch(updateChats({
+                                            key: chatKey,
+                                            user: message.sender,
+                                            timeStamp: timeStamp,
+                                            text: message.text
+                                        }))
                                     }
                                 }
                             }
-                        })
 
+                            counter ++
+                        })
                     })
                 })
-            }
-        }, 10)
-    }, [user.uid])
+
+            })
+        }
+    }, [currentUid])
 
     return (
        <Switch>
            {
-               user.uid ? <Redirect from={'/authPage/:type'} to={'/'}/> : <Route path={'/authPage'} component={AuthPage}/>
+               currentUid ? <Redirect from={'/authPage/:type'} to={'/'}/> : <Route path={'/authPage'} component={AuthPage}/>
            }
 
            <Route path={'/'} component={MainPage}/>

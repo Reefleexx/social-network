@@ -38,6 +38,7 @@ const MainPage = (props) => {
         </Switch>
     }
 
+
     return(
         <div className={'container-lg mt-3 justify-content-between' + classes.MainPage}>
             <Header/>

@@ -19,16 +19,14 @@ document.addEventListener('visibilitychange', async () => {
 })
 
 export default function* appWatcher () {
-    yield takeLeading(SHOW_NEW_MESSAGE, action => showMessageWorker(action.message))
+    yield takeLeading(SHOW_NEW_MESSAGE, action => showMessageWorker(action.sender_uid))
 }
 
-function* showMessageWorker (message) {
+function* showMessageWorker (sender_uid) {
 
-    const userUid = message.user
+    const userData = yield (call(() => getUserName_Photo(sender_uid)))
 
-    const userData = yield (call(() => getUserName_Photo(userUid)))
-
-    yield put(successNewMessage(userUid, userData.user_name))
+    yield put(successNewMessage(sender_uid, userData.user_name))
 }
 
 async function getUserName_Photo (uid) {

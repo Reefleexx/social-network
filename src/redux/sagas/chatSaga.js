@@ -185,10 +185,8 @@ async function getAllChats (uid) {
     ///////////////////  GET user information  \\\\\\\\\\\\\\\\\\\\
     for (const chatKey of chatKeysArr) {
         const userUid = userUids[chatKey]
-        console.log(userUid)
-        console.log(chatKey)
+
         await database.ref(`users/${userUid}/user_data`).once('value', userSnap => {
-            console.log(userSnap.val())
             userNames[chatKey] = userSnap.val().user_name
             userPhotos[chatKey] = userSnap.val().defaultPhotoSrc
         })
